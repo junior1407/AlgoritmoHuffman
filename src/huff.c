@@ -21,16 +21,24 @@ Node * NewNode(char c, int freq) {
     return newNode;
 }
 
-void AddNode(Huff huff, char c, int freq) {
-	Node * newNode = NewNode(c, freq);
+Node * PopNode(Huff huff) {
+	Node * temp = huff->head;
+	huff->head = temp->next;
+	free(temp->next);
+	huff->size--;
+
+	return temp;
+}
+
+void AddNode(Huff huff, Node newNode) {
 	if(huff == NULL) {
-		huff = newNode;
+		huff->head = newNode;
 	} else {
 		huff * i;
-    	for(i = huff; i != NULL; i = i->next) {
+    	for(i = huff->head; i != NULL; i = i->next) {
         	if(i->next == NULL) {
             	i->next = newNode;
-            	
+
             	return;
         	}
         	if((i->next->freq >= freq) && (i->freq <= freq)) {
