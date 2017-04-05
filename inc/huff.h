@@ -2,8 +2,8 @@
         typedef struct Huff Huff;
         typedef struct Node Node;
         Huff * NewHuff();
-        Huff * NewNode(char c, int freq);
-        Save the tree using “*” and the pre-order traversal
+        void NewNode(Huff huff, char c, int freq);
+        //Save the tree using “*” and the pre-order traversal
          struct Node {
                 char c;
                 int freq;
