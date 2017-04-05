@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/inc/huff.h
+stdio.h
+-
+
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/main.c
+stdio.h
+-
+src/huff.c
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/src/huff.c
+
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/src/huff.c
+../inc/huff.h
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/inc/huff.h
+stdlib.h
+-
+
