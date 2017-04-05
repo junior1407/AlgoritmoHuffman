@@ -61,12 +61,12 @@ void AddNode(Huff * huff, Node * newNode) {
 
             	return;
         	}
-        /*	if((i->next->freq >= freq) && (i->freq <= freq)) {
+        	if((i->next->freq >= newNode->freq) && (i->freq <= newNode->freq)) {
             	newNode->next = i->next;
             	i->next = newNode;
 
             	return;
-        	}*/
+        	}
     	}
 	}
 }
