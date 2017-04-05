@@ -10,6 +10,26 @@ Huff * NewHuff() {
 	return newHuff;
 }
 
+Huff * MakeTree(unsigned int * frequencias) {
+	Huff * huff = NewHuff;
+	int i;
+	for(i = 0; i < 256; i++) {
+		if(frequencias[i] > 0) {
+			AddNode(huff, NewNode(i, frequencias[i]));
+		}
+	}
+	while(huff->size > 1) {
+		Node * esquerda = PopNode(huff);
+		Node * direita = PopNode(huff);
+		Node * soma = NewNode('\*', (esquerda->freq + direita->freq));
+		soma->left = esquerda;
+		soma->right = direita;
+		AddNode(huff, soma);
+	}
+
+	return huff;
+}
+
 Node * NewNode(char c, int freq) {
     Node * newNode = (Node*) malloc(sizeof(Node));
     newNode->c = c;

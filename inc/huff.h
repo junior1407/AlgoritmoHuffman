@@ -3,6 +3,7 @@
         typedef struct Huff Huff;
         typedef struct Node Node;
         Huff * NewHuff();
+        Huff * MakeTree(unsigned int * frequencias);
         Node * NewNode(char c, int freq);
         Node * PopNode(Huff huff);
         void AddNode(Huff huff, Node newNode);
