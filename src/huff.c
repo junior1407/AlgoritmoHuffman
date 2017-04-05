@@ -41,7 +41,7 @@ Node * NewNode(char c, int freq) {
     return newNode;
 }
 
-Node * PopNode(Huff huff) {
+Node * PopNode(Huff * huff) {
 	Node * temp = huff->head;
 	huff->head = temp->next;
 	free(temp->next);
@@ -50,7 +50,7 @@ Node * PopNode(Huff huff) {
 	return temp;
 }
 
-void AddNode(Huff huff, Node newNode) {
+void AddNode(Huff * huff, Node * newNode) {
 	if(huff == NULL) {
 		huff->head = newNode;
 	} else {
