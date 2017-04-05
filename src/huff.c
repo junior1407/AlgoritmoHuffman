@@ -7,3 +7,11 @@ Huff * NewHuff() {
 
 	return newHuff;
 }
+
+void NewNode(Huff huff, char c, int freq) {
+	Node newNode = (Node*) malloc(sizeof(Node));
+	newNode->c = c;
+	newNode->freq = freq;
+	newNode->left = NULL;
+	newNode->right = NULL;
+}
