@@ -1,7 +1,8 @@
-#include "huff.h"
-
+#include "../inc/huff.h"
+/*
 Huff * NewHuff() {
-	Huff newHuff = (Huff*) malloc(sizeof(Huff));
+	Huff newHuff;
+	//Huff newHuff = (Huff*) malloc(sizeof(Huff));
 	newHuff->head = NULL;
 	newHuff->size = 0;
 
@@ -30,4 +31,4 @@ void NewNode(Huff huff, char c, int freq) {
             return;
         }
     }
-}
+}*/
