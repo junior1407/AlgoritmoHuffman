@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Valdir Jr/CLionProjects/untitled
+# Install script for directory: C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Valdir Jr/CLionProjects/untitled/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
