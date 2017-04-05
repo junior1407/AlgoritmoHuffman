@@ -27,7 +27,7 @@ int Compress(){
     GetFrequency(file, frequencias);
    // MakeTree(frequencias);
     int i;
-    for (i=0; i< 256; i++)
+  /*  for (i=0; i< 256; i++)
     {
         byte atual = i;
         if (frequencias[i]!=0){
@@ -43,7 +43,8 @@ int Compress(){
         }
 
     }
-
+*/
+    Huff * arvore = MakeTree(frequencias);
 
 
    // s
