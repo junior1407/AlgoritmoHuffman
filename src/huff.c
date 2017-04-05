@@ -14,19 +14,27 @@ Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
 	for(i = 0; i < 256; i++) {
+
 		if(frequencias[i] > 0) {
 			AddNode(huff, NewNode(i, frequencias[i]));
+            PrintList(huff->head);
+
 		}
 	}
+    printf("size: %d\n", huff->size);
 	while(huff->size > 1) {
+        PrintList(huff->head);
+        printf("\n");
 		Node * esquerda = PopNode(huff);
+    //    printf("Esquerda %c\n", esquerda->c);
 		Node * direita = PopNode(huff);
+     //   printf("Direita %c\n", direita->c);
 		Node * soma = NewNode('*', (esquerda->freq + direita->freq));
 		soma->left = esquerda;
 		soma->right = direita;
 		AddNode(huff, soma);
 	}
-
+    PrintPreOrder(huff->head);
 	return huff;
 }
 
@@ -43,15 +51,32 @@ Node * NewNode(char c, int freq) {
 
 Node * PopNode(Huff * huff) {
 	Node * temp = huff->head;
-	huff->head = temp->next;
-	free(temp->next);
-	huff->size--;
+    if (huff->size==1) {
 
+        huff->head= NULL;
+        (huff->size)--;
+        return temp;
+    }
+	huff->head = temp->next;
+	huff->size--;
 	return temp;
 }
 
+void PrintList(Node * node)
+{
+    while (node!=NULL)
+    {
+        printf("%c ",node->c);
+        node= node->next;
+    }
+    printf("\n");
+
+}
 void AddNode(Huff * huff, Node * newNode) {
-	if(huff == NULL) {
+
+  /*  printf("Addando %c\n", newNode->c);
+    (huff->size)++;
+	if(huff->head == NULL) {
 		huff->head = newNode;
 	} else {
 		Node * i;
@@ -61,17 +86,66 @@ void AddNode(Huff * huff, Node * newNode) {
 
             	return;
         	}
-        	if((i->next->freq >= newNode->freq) && (i->freq <= newNode->freq)) {
+        	if((i->next->freq > newNode->freq) && (i->freq < newNode->freq)) {
             	newNode->next = i->next;
             	i->next = newNode;
 
             	return;
         	}
     	}
-	}
+	}*/
+
+    if (huff->size == 0) // Lista vazia
+    {
+        huff->head = newNode;
+        (huff->size)++;
+    }
+    else if (huff->head->freq>=newNode->freq) // Adiciona na cabeca
+    {
+        newNode->next = huff->head;
+        huff->head=newNode;
+        (huff->size)++;
+    }
+    else // Adiciona meio/fim
+    {
+        Node * atual= huff->head;
+        while(atual!=NULL)
+        {
+            if (atual->next==NULL) // Chegou no fim da lista
+            {
+                atual->next= newNode;
+                (huff->size)++;
+                return;
+            }
+            if (atual->freq == newNode->freq) // Casos iguais, vai antes..
+            {
+                newNode->next=atual;
+                (huff->size)++;
+                return;
+            }
+            if ((atual->freq < newNode->freq) && ( atual->next->freq<newNode->freq)) // Adiciona entre
+            {
+                newNode->next= atual->next;
+                atual->next= newNode;
+                (huff->size)++;
+                return;
+
+            }
+
+
+
+
+        }
+
+
+    }
+
+
+
 }
 
 void PrintPreOrder(Node * head) {
+
 	if(head != NULL) {
 		printf("%c", head->c);
 		PrintPreOrder(head->left);

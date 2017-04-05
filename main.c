@@ -12,11 +12,14 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
     byte atual;
     while (fread(&atual, 1, 1, file) >= 1)
     {
-        //printf("%d %c %u\n", atual, atual, atual);
+        printf("%d %c %u\n", atual, atual, atual);
         frequencias[atual]++;
 
         //frequencias[(byte)c]++;
     }
+
+    rewind(file);
+    return;
 
 }
 
@@ -25,9 +28,10 @@ int Compress(){
    // File * saida =
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
+    printf("Frequencia de A é : %d\n", frequencias['A']);
    // MakeTree(frequencias);
-    int i;
-  /*  for (i=0; i< 256; i++)
+    //int i;
+    /**for (i=0; i< 256; i++)
     {
         byte atual = i;
         if (frequencias[i]!=0){
@@ -42,10 +46,11 @@ int Compress(){
 
         }
 
-    }
-*/
-    Huff * arvore = MakeTree(frequencias);
+    }*/
 
+    Huff * arvore = MakeTree(frequencias);
+    printf("Cabeca %c\n", arvore->head->c);
+    PrintPreOrder(arvore->head);
 
    // s
    /* if (file) {
