@@ -11,7 +11,7 @@ Huff * NewHuff() {
 }
 
 Huff * MakeTree(unsigned int * frequencias) {
-	Huff * huff = NewHuff;
+	Huff * huff = NewHuff();
 	int i;
 	for(i = 0; i < 256; i++) {
 		if(frequencias[i] > 0) {
@@ -21,7 +21,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 	while(huff->size > 1) {
 		Node * esquerda = PopNode(huff);
 		Node * direita = PopNode(huff);
-		Node * soma = NewNode('\*', (esquerda->freq + direita->freq));
+		Node * soma = NewNode('*', (esquerda->freq + direita->freq));
 		soma->left = esquerda;
 		soma->right = direita;
 		AddNode(huff, soma);
@@ -54,19 +54,19 @@ void AddNode(Huff * huff, Node * newNode) {
 	if(huff == NULL) {
 		huff->head = newNode;
 	} else {
-		huff * i;
+		Node * i;
     	for(i = huff->head; i != NULL; i = i->next) {
         	if(i->next == NULL) {
             	i->next = newNode;
 
             	return;
         	}
-        	if((i->next->freq >= freq) && (i->freq <= freq)) {
+        /*	if((i->next->freq >= freq) && (i->freq <= freq)) {
             	newNode->next = i->next;
             	i->next = newNode;
 
             	return;
-        	}
+        	}*/
     	}
 	}
 }
