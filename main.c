@@ -2,7 +2,7 @@
 #include "src/huff.c"
 
 int main() {
-    Node teste;
-    printf("Hello, World!\n");
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\teste.jpg","rb");
+
     return 0;
 }
