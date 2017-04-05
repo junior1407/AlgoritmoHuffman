@@ -4,6 +4,7 @@
         typedef struct Node Node;
         Huff * NewHuff();
         Node * NewNode(char c, int freq);
+        Node * PopNode(Huff huff);
         void AddNode(Huff huff, Node newNode);
         //Save the tree using �*� and the pre-order traversal
          struct Node {
