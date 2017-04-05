@@ -70,3 +70,11 @@ void AddNode(Huff * huff, Node * newNode) {
     	}
 	}
 }
+
+void PrintPreOrder(Node * head) {
+	if(head != NULL) {
+		printf("%c", head->c);
+		PrintPreOrder(head->left);
+		PrintPreOrder(head->right);
+	}
+}

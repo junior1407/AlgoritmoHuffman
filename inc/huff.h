@@ -7,6 +7,7 @@
         Node * NewNode(char c, int freq);
         Node * PopNode(Huff * huff);
         void AddNode(Huff * huff, Node * newNode);
+        void PrintPreOrder(Huff * huff);
         //Save the tree using �*� and the pre-order traversal
          struct Node {
                 char c;
