@@ -15,11 +15,8 @@ Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
 	for(i = 0; i < 256; i++) {
-
 		if(frequencias[i] > 0) {
 			AddNode(huff, NewNode(i, frequencias[i]));
-
-
 		}
 	}
     //PrintList(huff->head);
