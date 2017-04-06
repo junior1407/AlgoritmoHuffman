@@ -28,7 +28,7 @@ int Compress(){
     ElementoTabela * percurso= CreateElementoTabela();
     GeraTabelaConversao(tree->head, &tabelaConversao,&percurso);
     printf("\nSize:");
-    //printf("%d",tabelaConversao->elems['E']->size);
+    printf("%d",tabelaConversao->elems['E']->size);
     printf("\n");
     PrintLinha( tabelaConversao->elems['E']->front);
     // Cabecalho: 3 bits : Lixo. 13bits - nº Nos da Arvore.

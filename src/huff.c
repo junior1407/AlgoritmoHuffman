@@ -157,6 +157,7 @@ void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso
         //Linha * nova = CreateCopiaLinha(*percurso);
        // (((*tabela)->elems)[head->c])-> front= nova;
         ((*tabela)->elems)[head->c] = CreateCopiaElemento((*percurso)->front);
+        ((*tabela)->elems)[head->c]->size = (*percurso)->size;
         Dequeue(*percurso);
         return;
     }
