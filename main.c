@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "inc/huff.h"
 #include "inc/tabela.h"
-
-
 typedef unsigned char byte;
 
 int is_bit_i_set(byte c, int i)
@@ -10,62 +8,44 @@ int is_bit_i_set(byte c, int i)
     byte mask = 1 << i;
     return mask & c;
 }
-
 void GetFrequency(FILE * file, unsigned  int * frequencias){
     byte atual;
     while (fread(&atual, 1, 1, file) >= 1)
     {
-      //  printf("%d %c %u\n", atual, atual, atual);
         frequencias[atual]++;
-
-        //frequencias[(byte)c]++;
     }
-
     rewind(file);
     return;
-
 }
 
 int Compress(){
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
-
-   // printf("Frequencia de A é : %d\n", frequencias['A']);
     Huff * tree = MakeTree(frequencias);
     PrintPreOrder(tree->head);
     Tabela * tabelaConversao = CreateTabela();
     ElementoTabela * percurso= CreateElementoTabela();
-    printf("\n");
     GeraTabelaConversao(tree->head, &tabelaConversao,&percurso);
-    //int i;
-    /**for (i=0; i< 256; i++)
-    {
-        byte atual = i;
-        if (frequencias[i]!=0){
+    printf("\nSize:");
+    //printf("%d",tabelaConversao->elems['E']->size);
+    printf("\n");
+    PrintLinha( tabelaConversao->elems['E']->front);
+    // Cabecalho: 3 bits : Lixo. 13bits - nº Nos da Arvore.
 
-            printf("[Freq: %d Caractere: %c ]", frequencias[i],atual);
-            int j;
-            for (j=7; j>=0;j--)
-            {
-                printf("%d",is_bit_i_set(atual,j)==0?0:1);
-            }
-            printf("\n");
+    // Calcula número de bits necessários. Todos(Freq * Nº Bits). % 8
+    // Deduz quantidade de lixo. IMprime no arquvio.
 
-        }
 
-    }*/
+    // Conta nº de nós.
+    // Imprime no arquivo
 
-    Huff * arvore = MakeTree(frequencias);
+    //Imprime-PreOrder No arquivo
 
-   // PrintPreOrder(arvore->head);
+    //Fazer conversão segundo tabela lendo novamento do arquivo.
 
-   // s
-   /* if (file) {
-        while ((c = getc(file)) != EOF)
-            printf("%c %d\n", (unsigned  char) c, c );
-        fclose(file);
-    }*/
+
+
     fclose(file);
     return 0;
 
