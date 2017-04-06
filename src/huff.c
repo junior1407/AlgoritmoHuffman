@@ -1,5 +1,6 @@
 #include "../inc/huff.h"
 #include <stdlib.h>
+#include "../inc/tabela.h"
 
 Huff * NewHuff() {
 
@@ -21,6 +22,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 
 		}
 	}
+    //PrintList(huff->head);
 	while(huff->size > 1) {
 
 		Node * esquerda = PopNode(huff);
@@ -31,13 +33,13 @@ Huff * MakeTree(unsigned int * frequencias) {
 		soma->left = esquerda;
 		soma->right = direita;
 		AddNode(huff, soma);
-
+      //  PrintList(huff->head);
 	}
-    PrintPreOrder(huff->head);
+   // PrintPreOrder(huff->head);
 	return huff;
 }
 
-Node * NewNode(char c, int freq) {
+Node * NewNode(unsigned char c, int freq) {
     Node * newNode = (Node*) malloc(sizeof(Node));
     newNode->c = c;
     newNode->freq = freq;
@@ -144,8 +146,35 @@ void AddNode(Huff * huff, Node * newNode) {
 
 }
 
-void PrintPreOrder(Node * head) {
+void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso)
+{
 
+   //Condições de parada.
+    // Se for folha, deve salvar percurso e subir.
+    if ((head->left==NULL)&&(head->right==NULL))
+    {
+
+        //Linha * nova = CreateCopiaLinha(*percurso);
+       // (((*tabela)->elems)[head->c])-> front= nova;
+        Dequeue(*percurso);
+        return;
+    }
+    Enqueue(*percurso,'0');
+    GeraTabelaConversao(head->left, tabela, percurso);
+
+    Enqueue(*percurso,'1');
+    GeraTabelaConversao(head->right, tabela, percurso);
+
+    Dequeue(*percurso);
+
+
+
+}
+
+
+
+
+void PrintPreOrder(Node * head) {
 	if(head != NULL) {
 		printf("%c", head->c);
 		PrintPreOrder(head->left);

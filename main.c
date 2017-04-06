@@ -1,5 +1,8 @@
 #include <stdio.h>
-#include "src/huff.c"
+#include "inc/huff.h"
+#include "inc/tabela.h"
+
+
 typedef unsigned char byte;
 
 int is_bit_i_set(byte c, int i)
@@ -12,7 +15,7 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
     byte atual;
     while (fread(&atual, 1, 1, file) >= 1)
     {
-        printf("%d %c %u\n", atual, atual, atual);
+      //  printf("%d %c %u\n", atual, atual, atual);
         frequencias[atual]++;
 
         //frequencias[(byte)c]++;
@@ -25,11 +28,16 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
 
 int Compress(){
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
-   // File * saida =
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
-    printf("Frequencia de A é : %d\n", frequencias['A']);
-   // MakeTree(frequencias);
+
+   // printf("Frequencia de A é : %d\n", frequencias['A']);
+    Huff * tree = MakeTree(frequencias);
+    PrintPreOrder(tree->head);
+    Tabela * tabelaConversao = CreateTabela();
+    ElementoTabela * percurso= CreateElementoTabela();
+    printf("\n");
+    GeraTabelaConversao(tree->head, &tabelaConversao,&percurso);
     //int i;
     /**for (i=0; i< 256; i++)
     {
@@ -49,8 +57,8 @@ int Compress(){
     }*/
 
     Huff * arvore = MakeTree(frequencias);
-    printf("Cabeca %c\n", arvore->head->c);
-    PrintPreOrder(arvore->head);
+
+   // PrintPreOrder(arvore->head);
 
    // s
    /* if (file) {
