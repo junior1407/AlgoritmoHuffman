@@ -13,7 +13,7 @@ ElementoTabela * CreateElementoTabela();
 Linha * CreateLinha(char i);
 void Enqueue(ElementoTabela * elem, char i);
 char Dequeue(ElementoTabela * elem);
-Linha * CreateCopiaLinha(Linha * head);
+ElementoTabela * CreateCopiaElemento(Linha * head);
 void PrintLinha(Linha * linha);
 struct Tabela {
     ElementoTabela **elems;

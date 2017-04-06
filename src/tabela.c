@@ -65,8 +65,15 @@ void Enqueue(ElementoTabela *tabela, char i)
     (tabela->size)++;
 }
 
-Linha * CreateCopiaLinha(Linha * head)
+ElementoTabela * CreateCopiaElemento(Linha * head)
 {
+    ElementoTabela * nova = CreateElementoTabela();
+    while(head!=NULL)
+    {
+        Enqueue(nova, head->i);
+        head = head->next;
+    }
+    return nova;
 
 
 }
