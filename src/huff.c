@@ -17,14 +17,12 @@ Huff * MakeTree(unsigned int * frequencias) {
 
 		if(frequencias[i] > 0) {
 			AddNode(huff, NewNode(i, frequencias[i]));
-            PrintList(huff->head);
+
 
 		}
 	}
-    printf("size: %d\n", huff->size);
 	while(huff->size > 1) {
-        PrintList(huff->head);
-        printf("\n");
+
 		Node * esquerda = PopNode(huff);
     //    printf("Esquerda %c\n", esquerda->c);
 		Node * direita = PopNode(huff);
@@ -33,6 +31,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 		soma->left = esquerda;
 		soma->right = direita;
 		AddNode(huff, soma);
+
 	}
     PrintPreOrder(huff->head);
 	return huff;
@@ -66,7 +65,7 @@ void PrintList(Node * node)
 {
     while (node!=NULL)
     {
-        printf("%c ",node->c);
+        printf("(%c %d) ",node->c,node->freq);
         node= node->next;
     }
     printf("\n");
@@ -117,21 +116,22 @@ void AddNode(Huff * huff, Node * newNode) {
                 (huff->size)++;
                 return;
             }
-            if (atual->freq == newNode->freq) // Casos iguais, vai antes..
+         /*   if (atual->freq == newNode->freq) // Casos iguais, vai antes..
             {
-                newNode->next=atual;
+                atual->next = newNode;
+
                 (huff->size)++;
                 return;
-            }
-            if ((atual->freq < newNode->freq) && ( atual->next->freq<newNode->freq)) // Adiciona entre
+            }*/
+            //4 5 6  6*
+            if ((atual->freq <= newNode->freq) && ( atual->next->freq >= newNode->freq)) // Adiciona entre
             {
                 newNode->next= atual->next;
                 atual->next= newNode;
                 (huff->size)++;
                 return;
-
             }
-
+            atual=atual->next;
 
 
 
