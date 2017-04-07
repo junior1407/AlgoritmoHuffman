@@ -3,5 +3,5 @@ project(untitled)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c src/huff.c src/tabela.c)
+set(SOURCE_FILES main.c src/huff.c src/tabela.c src/binary.c)
 add_executable(untitled ${SOURCE_FILES})
