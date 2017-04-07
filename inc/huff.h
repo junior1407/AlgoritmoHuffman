@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "tabela.h"
 
-
-        typedef struct Huff Huff;
+typedef struct Huff Huff;
 typedef struct Node Node;
+
 Huff * NewHuff();
 Huff * MakeTree(unsigned int * frequencias);
 Node * NewNode(unsigned char c, int freq);
@@ -13,17 +13,6 @@ void PrintPreOrder(Node * head);
 void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso);
 void PrintList(Node * node);
 //Save the tree using �*� and the pre-order traversal
-struct Node {
-    unsigned char c;
-    int freq;
-    Node * next;
-    Node * left;
-    Node * right;
-};
-struct Huff {
-    Node * head;
-    int size;
-};
 
 /*/
 

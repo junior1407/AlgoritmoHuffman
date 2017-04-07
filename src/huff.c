@@ -2,6 +2,21 @@
 #include <stdlib.h>
 #include "../inc/tabela.h"
 
+struct Node {
+
+    unsigned char c;
+    int freq;
+    Node * next;
+    Node * left;
+    Node * right;
+};
+
+struct Huff {
+
+    Node * head;
+    int size;
+};
+
 Huff * NewHuff() {
 
 	Huff * newHuff = (Huff*) malloc(sizeof(Huff));

@@ -31,20 +31,4 @@ Elementos[3]  -> (linha)
 ...
 Elementos[255] ->Linha
 */
-struct Tabela {
-    ElementoTabela **elems;  // Array de 256 Posições.
-};
-struct ElementoTabela {
-
-    int size;
-    Linha * front;
-    Linha * rear;
-};
-struct Linha{
-    char i;
-    Linha * next;
-};
-
-
-
-#endif //TABELAH
+#endif

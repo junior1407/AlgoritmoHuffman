@@ -6,6 +6,23 @@
 #include <stdio.h>
 #include <string.h>
 
+struct Tabela {
+
+    ElementoTabela **elems;  // Array de 256 Posições.
+};
+
+struct ElementoTabela {
+
+    int size;
+    Linha * front;
+    Linha * rear;
+};
+
+struct Linha{
+
+    char i;
+    Linha * next;
+};
 
 void PrintLinha(Linha * linha)
 {
