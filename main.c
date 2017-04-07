@@ -26,12 +26,12 @@ int Compress(){
     Huff * tree = MakeTree(frequencias);
 
 
-   PrintPreOrder(tree->head);
+   PrintPreOrder(getTreeHead(tree));
     Tabela * tabelaConversao = CreateTabela();
 
 
-    ElementoTabela * percurso= CreateElementoTabela();
-    GeraTabelaConversao(tree->head, &tabelaConversao,&percurso);
+    ElementoTabela * percurso = CreateElementoTabela();
+    GeraTabelaConversao(getTreeHead(tree), &tabelaConversao,&percurso);
     /*int i;
     int maior = 0;
     int soma=0;

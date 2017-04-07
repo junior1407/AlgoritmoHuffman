@@ -15,8 +15,18 @@ void AddNode(Huff * huff, Node * newNode);
 void PrintPreOrder(Node * head);
 void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso);
 void PrintList(Node * node);
-
 int howManyNodes(int count, Node node);
+/*
+ * Have a point to a Huff type as a parameter.
+ * Returns a Node type pointer to the tree head.
+ */
+Node * getTreeHead(Huff * tree);
+/*
+ * Have a pointer to a Huff type as a parameter.
+ * Returns a int with the tree size.
+ */
+int getTreeSize(Huff * tree);
+
 // retorna o número de nós da arvore//
 //a variável "count" deve ser setada com 0 se node = huff->head//
 
