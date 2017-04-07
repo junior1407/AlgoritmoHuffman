@@ -15,6 +15,9 @@ void AddNode(Huff * huff, Node * newNode);
 void PrintPreOrder(Node * head);
 void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso);
 void PrintList(Node * node);
-//Save the tree using �*� and the pre-order traversal
+
+int howManyNodes(int count, Node node);
+// retorna o número de nós da arvore//
+//a variável "count" deve ser setada com 0 se node = huff->head//
 
 #endif
