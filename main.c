@@ -21,6 +21,8 @@ int Compress(){
     Tabela * tabelaConversao = CreateTabela();
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
+
+
     //Criação do Cabeçalho:
     //1º Cálculo LIxo. 401 bits % 8 = 1 bits,  8 -1 = 7 bits de lixo.  (IMPRIMIR NO ARQUIVO)
     //2º Converte Inteiro para Binário. retorna char [3]

@@ -227,12 +227,16 @@ void AddNode(Huff * huff, Node * newNode) {
 void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percurso) {
    //Condições de parada.
     // Se for folha, deve salvar percurso e subir.
+
     if ((head->left==NULL)&&(head->right==NULL))
     {
         ElementoTabela * tabela_element;
         tabela_element = CreateElementCopy(GetElementoTabelaFront(*percurso));
         SetElementoTabelaSize(tabela_element, GetElementoTabelaSize(*percurso));
+        SetTabelaElemento(*tabela, tabela_element, head->c);
         Dequeue(*percurso);
+
+
         return;
     }
     Enqueue(*percurso,'0');

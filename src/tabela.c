@@ -40,6 +40,7 @@ ElementoTabela * CreateElementoTabela() {
     ElementoTabela * novo = (ElementoTabela*)malloc(sizeof(ElementoTabela));
     novo->size=0;
     novo->front=NULL;
+    novo->rear=NULL;
     return  novo;
 }
 
