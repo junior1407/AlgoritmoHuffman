@@ -6,6 +6,14 @@
 #include <string.h>
 #include <math.h>
 
+
+
+int is_bit_i_set(unsigned char c, int i)
+{
+    unsigned char mask = 1 << i;
+    return mask & c;
+}
+
 char * IntegerToBinary(int integer, int string_size) {
 
     char* binary_number = (char*)malloc(sizeof(char)*(string_size+1));
