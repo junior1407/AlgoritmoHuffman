@@ -177,11 +177,6 @@ void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percu
     if ((head->left==NULL)&&(head->right==NULL))
     {
         ElementoTabela * tabela_element;
-        //Linha * nova = CreateCopiaLinha(*percurso);
-       // (((*tabela)->elems)[head->c])-> front= nova;
-
-         //((*tabela)->elems)[head->c] = CreateCopiaElemento((*percurso)->front);
-         //((*tabela)->elems)[head->c]->size = (*percurso)->size;
         tabela_element = CreateElementCopy(GetElementoTabelaFront(*percurso));
         SetElementoTabelaSize(tabela_element, GetElementoTabelaSize(*percurso));
         Dequeue(*percurso);
@@ -194,6 +189,7 @@ void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percu
     CreatesConversionTable(head->right, tabela, percurso);
 
     Dequeue(*percurso);
+
 } //Creates a Conversion table to speed up the process of encoding. Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empy Elemento Tabela representing the navigation of the tree.
 void PrintPreOrder(Node * head) {
 	if(head != NULL) {
