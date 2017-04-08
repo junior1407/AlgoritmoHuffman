@@ -17,32 +17,21 @@ int Compress(){
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\v2.jpg","rb");
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
-
     Huff * tree = MakeTree(frequencias);
-
     PrintPreOrder(GetHuffHead(tree));
     Tabela * tabelaConversao = CreateTabela();
-
-
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
-
     //Criação do Cabeçalho:
     //1º Cálculo LIxo. 401 bits % 8 = 1 bits,  8 -1 = 7 bits de lixo.  (IMPRIMIR NO ARQUIVO)
     //2º Converte Inteiro para Binário. retorna char [3]
     //3º Função Percorre Arvore contando nós. Converter para binário em 13 bits
     // IMPRIME PREOREDER
-
-
     //Impressão dos Dados:
-    // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo.
-
-
+    // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
     fclose(file);
     return 0;
-
 }
-
 void Decompress()
 {
     // Ler Cabecalho.
