@@ -6,14 +6,14 @@ struct Node {
 
     unsigned char c;
     int freq;
-    Node * next;
-    Node * left;
-    Node * right;
+    struct Node * next;
+    struct Node * left;
+    struct Node * right;
 };
 
 struct Huff {
 
-    Node * head;
+    struct Node * head;
     int size;
 };
 
@@ -80,10 +80,9 @@ void PrintList(Node * node)
     while (node!=NULL)
     {
         printf("(%c %d) ",node->c,node->freq);
-        node= node->next;
+        node = node->next;
     }
     printf("\n");
-
 }
 void AddNode(Huff * huff, Node * newNode) {
 
@@ -147,29 +146,25 @@ void AddNode(Huff * huff, Node * newNode) {
             }
             atual=atual->next;
 
-
-
         }
 
-
     }
-
-
-
 }
 
 void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso)
 {
-
    //Condições de parada.
     // Se for folha, deve salvar percurso e subir.
     if ((head->left==NULL)&&(head->right==NULL))
     {
-
+        ElementoTabela * tabela_element;
         //Linha * nova = CreateCopiaLinha(*percurso);
        // (((*tabela)->elems)[head->c])-> front= nova;
-        ((*tabela)->elems)[head->c] = CreateCopiaElemento((*percurso)->front);
-        ((*tabela)->elems)[head->c]->size = (*percurso)->size;
+
+         //((*tabela)->elems)[head->c] = CreateCopiaElemento((*percurso)->front);
+         //((*tabela)->elems)[head->c]->size = (*percurso)->size;
+        tabela_element = CreateCopiaElemento(getElementoTabelaFront(*percurso));
+        setElementoTabelaSize(tabela_element, getElementoTabelaSize(*percurso));
         Dequeue(*percurso);
         return;
     }
@@ -180,13 +175,7 @@ void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso
     GeraTabelaConversao(head->right, tabela, percurso);
 
     Dequeue(*percurso);
-
-
-
 }
-
-
-
 
 void PrintPreOrder(Node * head) {
 	if(head != NULL) {
@@ -194,4 +183,14 @@ void PrintPreOrder(Node * head) {
 		PrintPreOrder(head->left);
 		PrintPreOrder(head->right);
 	}
+}
+
+Node * getTreeHead(Huff * tree) {
+
+    return tree->head;
+}
+
+int getTreeSize(Huff * tree) {
+
+    return tree->size;
 }

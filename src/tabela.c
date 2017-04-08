@@ -6,22 +6,22 @@
 #include <stdio.h>
 #include <string.h>
 
-struct Tabela {
+struct Linha{
 
-    ElementoTabela **elems;  // Array de 256 Posições.
+    char i;
+    struct Linha * next;
 };
 
 struct ElementoTabela {
 
     int size;
-    Linha * front;
-    Linha * rear;
+    struct Linha * front;
+    struct Linha * rear;
 };
 
-struct Linha{
+struct Tabela {
 
-    char i;
-    Linha * next;
+    struct ElementoTabela **elems;  // Array de 256 Posições.
 };
 
 void PrintLinha(Linha * linha)
@@ -31,10 +31,7 @@ void PrintLinha(Linha * linha)
         printf("%c ", linha->i);
         PrintLinha(linha->next);
     }
-
-
 }
-
 
 ElementoTabela * CreateElementoTabela()
 {
@@ -55,7 +52,6 @@ Tabela * CreateTabela()
     }
     return novo;
 }
-
 
 Linha * CreateLinha(char i)
 {
@@ -91,8 +87,6 @@ ElementoTabela * CreateCopiaElemento(Linha * head)
         head = head->next;
     }
     return nova;
-
-
 }
 
 char Dequeue(ElementoTabela * elem)
@@ -126,6 +120,22 @@ char Dequeue(ElementoTabela * elem)
     }
 }
 
+Linha * getElementoTabelaFront(ElementoTabela * elemento_tabela) {
 
-//void Push(ElementoTabela * elem, char i);
-//char Pop(ElementoTabela * elem);
+    return elemento_tabela->front;
+}
+
+int getElementoTabelaSize(ElementoTabela * elemento_tabela) {
+
+    return elemento_tabela->size;
+}
+
+void setElementoTabelaSize(ElementoTabela * elemento_tabela, int value) {
+
+    elemento_tabela->size = value;
+}
+
+ElementoTabela * getTabelaElem(Tabela * tabela, int index) {
+
+    return tabela->elems[index];
+}
