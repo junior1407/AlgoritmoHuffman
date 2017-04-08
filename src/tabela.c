@@ -7,12 +7,10 @@
 #include <string.h>
 
 struct Linha{
-
     char i;
     struct Linha * next;
 }; // Data Structure to manage Encoding Codes.
 struct ElementoTabela {
-
     int size;
     struct Linha * front;
     struct Linha * rear;
@@ -32,6 +30,7 @@ void PrintLinha(Linha * linha) {
         printf("%c ", linha->i);
         PrintLinha(linha->next);
     }
+
 } //Prints the entire "Linha"
 ElementoTabela * CreateElementoTabela() {
     ElementoTabela * novo = (ElementoTabela*)malloc(sizeof(ElementoTabela));

@@ -20,6 +20,7 @@ int howManyNodes(int count, Node node);
  * Have a point to a Huff type as a parameter.
  * Returns a Node type pointer to the tree head.
  */
+
 //Getters and Setters for the Struct Node
 unsigned char GetNodeC(Node *n);
 void setNodeC(Node * n, unsigned char c);
@@ -36,8 +37,5 @@ Node * GetHuffHead(Huff * h);
 void SetHuffHead(Huff * h, Node * head);
 int GetHuffSize(Huff * h);
 void SetHuffSize(Huff * h, int size);
-
-
-
 
 #endif
