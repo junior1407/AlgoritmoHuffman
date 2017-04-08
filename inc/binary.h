@@ -4,9 +4,6 @@
 #ifndef BINARY_H
 #define BINARY_H
 
-
-
-
 int is_bit_i_set(unsigned char c, int i);
 
 /*
@@ -20,7 +17,5 @@ char * IntegerToBinary(int integer, int string_size);
  * Returns a integer of the converted binary number.
  */
 int BinaryToInteger(char* binary_number);
-
-
 
 #endif
