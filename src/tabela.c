@@ -9,36 +9,41 @@
 struct Linha{
     char i;
     struct Linha * next;
-}; // Data Structure to manage Encoding Codes.
+};
+
 struct ElementoTabela {
     int size;
     struct Linha * front;
     struct Linha * rear;
-};// Data Structure for the informantion about the enconding of each byte.
+};
+
 struct Tabela {
-    struct ElementoTabela **elems;  // Array de 256 Posições.
-}; // Data Structure for the Conversion Table.
+    struct ElementoTabela **elems; // Array de 256 Posições.
+};
+
 Linha * CreateLinha(char i) {
     Linha * novo = (Linha*) malloc(sizeof(Linha));
     novo->i=i;
     novo->next=NULL;
     return novo;
-} // Creates a "Linha" given an char containing '0' or '1'
+}
+
 void PrintLinha(Linha * linha) {
     if (linha!=NULL)
     {
         printf("%c ", linha->i);
         PrintLinha(linha->next);
     }
+}
 
-} //Prints the entire "Linha"
 ElementoTabela * CreateElementoTabela() {
     ElementoTabela * novo = (ElementoTabela*)malloc(sizeof(ElementoTabela));
     novo->size=0;
     novo->front=NULL;
+    novo->rear=NULL;
     return  novo;
+}
 
-} //Creates an empty "ElementoTabela"
 Tabela * CreateTabela() {
     Tabela * novo = (Tabela *)malloc(sizeof(Tabela));
     novo->elems = (ElementoTabela **)malloc(256* sizeof(ElementoTabela));
@@ -48,7 +53,8 @@ Tabela * CreateTabela() {
         (novo->elems)[i] = CreateElementoTabela();
     }
     return novo;
-} // Creates an empty Conversion Table.
+}
+
 void Enqueue(ElementoTabela *tabela, char i) {
     Linha * novo = CreateLinha(i);
     if (tabela->size==0)
@@ -61,9 +67,9 @@ void Enqueue(ElementoTabela *tabela, char i) {
         tabela->rear->next = novo;
         tabela->rear = tabela->rear->next;
     }
-
     (tabela->size)++;
-} // Adds a '0' or '1' to a given "ElementoTabela" representing the enconding of a byte.
+}
+
 ElementoTabela * CreateElementCopy(Linha * head) {
     ElementoTabela * nova = CreateElementoTabela();
     while(head!=NULL)
@@ -72,7 +78,8 @@ ElementoTabela * CreateElementCopy(Linha * head) {
         head = head->next;
     }
     return nova;
-} // Creates a copy of a given enconding to a new "ElementoTabela"
+}
+
 char Dequeue(ElementoTabela * elem) {
     if (elem->size !=0)
     {
@@ -101,50 +108,52 @@ char Dequeue(ElementoTabela * elem) {
             return aux->i;
         }
     }
-} // Removes the last bit of a given enconding. Returns the deleted bit.
+}
 
-//Gets and Sets for the Struct "Linha".
 char GetLinhaI(Linha * l) {
     return l->i;
 }
+
 void SetLinhaI(Linha * l, char i) {
     l->i = i;
 }
+
 Linha * GetLinhaNext(Linha * l) {
     return l->next;
 }
+
 void SetLinhaNext(Linha * l, Linha * next) {
     l->next= next;
 }
 
-//Gets and Sets for the Struct "ElementoTabela".
 int GetElementoTabelaSize(ElementoTabela * elem) {
     return  elem ->size;
 }
+
 void SetElementoTabelaSize(ElementoTabela * elem, int size) {
     elem->size = size;
 }
+
 Linha * GetElementoTabelaFront(ElementoTabela * elem) {
     return elem->front;
-
 }
+
 void SetElementoTabelaFront(ElementoTabela * elem, Linha * front ) {
     elem->front = front;
-
 }
+
 Linha * GetElementoTabelaRear(ElementoTabela * elem) {
     return elem->rear;
-
 }
+
 void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear ) {
     elem->rear = rear;
-
 }
 
-//Gets and Sets for the Struct "Tabela"
 ElementoTabela ** GetTabelaElements(Tabela * tabela) {
     return tabela->elems;
 }
+
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos) {
     tabela->elems[pos] = elemento;
 }
