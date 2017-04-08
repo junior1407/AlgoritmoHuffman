@@ -25,6 +25,7 @@ Node * PopNode(Huff * huff);
 // Adds a Node to a given Huffman's Tree in ascending order.
 void AddNode(Huff * huff, Node * newNode);
 
+void AddNodeInterno(Huff * huff, Node * newNode);
 //Prints the given Huffman's Tree in Preorder transversal.
 void PrintPreOrder(Node * head);
 
@@ -35,7 +36,7 @@ void PrintPreOrder(Node * head);
 void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percurso);
 
 void PrintList(Node * node); // TO BE REMOVED.
-int howManyNodes(int count, Node node);
+int HowManyNodes(int count, Node * node);
 
 //Getters and Setters for the Struct Node
 unsigned char GetNodeC(Node *n);

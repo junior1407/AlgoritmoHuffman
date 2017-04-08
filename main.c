@@ -14,11 +14,10 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
 }
 
 int Compress(){
-    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\v2.jpg","rb");
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
-    PrintPreOrder(GetHuffHead(tree));
     Tabela * tabelaConversao = CreateTabela();
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);

@@ -97,6 +97,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 	for(i = 0; i < 256; i++) {
 		if(frequencias[i] > 0) {
 			AddNode(huff, NewNode(i, frequencias[i]));
+
 		}
 	}
 	while(huff->size > 1)
@@ -106,8 +107,10 @@ Huff * MakeTree(unsigned int * frequencias) {
 		Node * soma = NewNode('*', (esquerda->freq + direita->freq));
 		soma->left = esquerda;
 		soma->right = direita;
-		AddNode(huff, soma);
+		AddNodeInterno(huff, soma);
+
 	}
+
 	return huff;
 }
 
@@ -144,7 +147,9 @@ void PrintList(Node * node) {
     printf("\n");
 } // TO BE REMOVED.
 
-void AddNode(Huff * huff, Node * newNode) {
+
+
+void AddNodeInterno(Huff * huff, Node * newNode) {
     if (huff->size == 0) // Lista vazia
     {
         huff->head = newNode;
@@ -167,15 +172,45 @@ void AddNode(Huff * huff, Node * newNode) {
                 (huff->size)++;
                 return;
             }
-         /*   if (atual->freq == newNode->freq) // Casos iguais, vai antes..
+            if ((atual->freq <= newNode->freq) && ( atual->next->freq >= newNode->freq)) // Adiciona entre
             {
-                atual->next = newNode;
-
+                newNode->next= atual->next;
+                atual->next= newNode;
                 (huff->size)++;
                 return;
-            }*/
-            //4 5 6  6*
-            if ((atual->freq <= newNode->freq) && ( atual->next->freq >= newNode->freq)) // Adiciona entre
+            }
+            atual=atual->next;
+
+        }
+
+    }
+}
+
+
+void AddNode(Huff * huff, Node * newNode) {
+    if (huff->size == 0) // Lista vazia
+    {
+        huff->head = newNode;
+        (huff->size)++;
+    }
+    else if (huff->head->freq>newNode->freq) // Adiciona na cabeca
+    {
+        newNode->next = huff->head;
+        huff->head=newNode;
+        (huff->size)++;
+    }
+    else // Adiciona meio/fim
+    {
+        Node * atual= huff->head;
+        while(atual!=NULL)
+        {
+            if (atual->next==NULL) // Chegou no fim da lista
+            {
+                atual->next= newNode;
+                (huff->size)++;
+                return;
+            }
+            if ((atual->freq <= newNode->freq) && ( atual->next->freq > newNode->freq)) // Adiciona entre
             {
                 newNode->next= atual->next;
                 atual->next= newNode;
