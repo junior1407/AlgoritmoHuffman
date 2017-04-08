@@ -7,42 +7,39 @@
 #include <string.h>
 
 struct Linha{
-
     char i;
     struct Linha * next;
-};
-
+}; // Data Structure to manage Encoding Codes.
 struct ElementoTabela {
-
     int size;
     struct Linha * front;
     struct Linha * rear;
-};
-
+};// Data Structure for the informantion about the enconding of each byte.
 struct Tabela {
-
     struct ElementoTabela **elems;  // Array de 256 Posições.
-};
-
-void PrintLinha(Linha * linha)
-{
+}; // Data Structure for the Conversion Table.
+Linha * CreateLinha(char i) {
+    Linha * novo = (Linha*) malloc(sizeof(Linha));
+    novo->i=i;
+    novo->next=NULL;
+    return novo;
+} // Creates a "Linha" given an char containing '0' or '1'
+void PrintLinha(Linha * linha) {
     if (linha!=NULL)
     {
         printf("%c ", linha->i);
         PrintLinha(linha->next);
     }
-}
 
-ElementoTabela * CreateElementoTabela()
-{
+} //Prints the entire "Linha"
+ElementoTabela * CreateElementoTabela() {
     ElementoTabela * novo = (ElementoTabela*)malloc(sizeof(ElementoTabela));
     novo->size=0;
     novo->front=NULL;
     return  novo;
 
-}
-Tabela * CreateTabela()
-{
+} //Creates an empty "ElementoTabela"
+Tabela * CreateTabela() {
     Tabela * novo = (Tabela *)malloc(sizeof(Tabela));
     novo->elems = (ElementoTabela **)malloc(256* sizeof(ElementoTabela));
     int i;
@@ -51,18 +48,8 @@ Tabela * CreateTabela()
         (novo->elems)[i] = CreateElementoTabela();
     }
     return novo;
-}
-
-Linha * CreateLinha(char i)
-{
-    Linha * novo = (Linha*) malloc(sizeof(Linha));
-    novo->i=i;
-    novo->next=NULL;
-    return novo;
-}
-
-void Enqueue(ElementoTabela *tabela, char i)
-{
+} // Creates an empty Conversion Table.
+void Enqueue(ElementoTabela *tabela, char i) {
     Linha * novo = CreateLinha(i);
     if (tabela->size==0)
     {
@@ -76,10 +63,8 @@ void Enqueue(ElementoTabela *tabela, char i)
     }
 
     (tabela->size)++;
-}
-
-ElementoTabela * CreateCopiaElemento(Linha * head)
-{
+} // Adds a '0' or '1' to a given "ElementoTabela" representing the enconding of a byte.
+ElementoTabela * CreateElementCopy(Linha * head) {
     ElementoTabela * nova = CreateElementoTabela();
     while(head!=NULL)
     {
@@ -87,10 +72,8 @@ ElementoTabela * CreateCopiaElemento(Linha * head)
         head = head->next;
     }
     return nova;
-}
-
-char Dequeue(ElementoTabela * elem)
-{
+} // Creates a copy of a given enconding to a new "ElementoTabela"
+char Dequeue(ElementoTabela * elem) {
     if (elem->size !=0)
     {
         if (elem->size == 1)
@@ -118,24 +101,50 @@ char Dequeue(ElementoTabela * elem)
             return aux->i;
         }
     }
+} // Removes the last bit of a given enconding. Returns the deleted bit.
+
+//Gets and Sets for the Struct "Linha".
+char GetLinhaI(Linha * l) {
+    return l->i;
+}
+void SetLinhaI(Linha * l, char i) {
+    l->i = i;
+}
+Linha * GetLinhaNext(Linha * l) {
+    return l->next;
+}
+void SetLinhaNext(Linha * l, Linha * next) {
+    l->next= next;
 }
 
-Linha * getElementoTabelaFront(ElementoTabela * elemento_tabela) {
+//Gets and Sets for the Struct "ElementoTabela".
+int GetElementoTabelaSize(ElementoTabela * elem) {
+    return  elem ->size;
+}
+void SetElementoTabelaSize(ElementoTabela * elem, int size) {
+    elem->size = size;
+}
+Linha * GetElementoTabelaFront(ElementoTabela * elem) {
+    return elem->front;
 
-    return elemento_tabela->front;
+}
+void SetElementoTabelaFront(ElementoTabela * elem, Linha * front ) {
+    elem->front = front;
+
+}
+Linha * GetElementoTabelaRear(ElementoTabela * elem) {
+    return elem->rear;
+
+}
+void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear ) {
+    elem->rear = rear;
+
 }
 
-int getElementoTabelaSize(ElementoTabela * elemento_tabela) {
-
-    return elemento_tabela->size;
+//Gets and Sets for the Struct "Tabela"
+ElementoTabela ** GetTabelaElements(Tabela * tabela) {
+    return tabela->elems;
 }
-
-void setElementoTabelaSize(ElementoTabela * elemento_tabela, int value) {
-
-    elemento_tabela->size = value;
-}
-
-ElementoTabela * getTabelaElem(Tabela * tabela, int index) {
-
-    return tabela->elems[index];
+void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos) {
+    tabela->elems[pos] = elemento;
 }

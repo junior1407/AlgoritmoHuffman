@@ -1,31 +1,83 @@
 #include "../inc/huff.h"
 #include <stdlib.h>
-#include "../inc/tabela.h"
 
 struct Node {
-
     unsigned char c;
     int freq;
     struct Node * next;
     struct Node * left;
     struct Node * right;
-};
-
+}; // Data Structure for the Huffman Tree's Nodes.
 struct Huff {
-
     struct Node * head;
     int size;
-};
+};// Data Structure for the Huffman Tree
 
+unsigned char GetNodeC(Node *n)
+{
+    return  n->c;
+}
+void setNodeC(Node * n, unsigned char c)
+{
+    n->c = c;
+}
+int GetNodeFreq(Node * n)
+{
+    return  n->freq;
+}
+void SetNodeFreq(Node * n, int freq)
+{
+    n->freq=freq;
+}
+Node * GetNodeNext(Node * n)
+{
+    return  n->next;
+}
+void SetNodeNext(Node * n, Node * next)
+{
+    n->next= next;
+}
+Node * GetNodeLeft(Node * n)
+{
+    return  n->left;
+}
+void SetNodeLeft(Node * n, Node * left)
+{
+    n->left= left;
+}
+Node * GetNodeRight(Node * n)
+{
+    return  n->right;
+}
+void SetNodeRight(Node * n, Node * right)
+{
+    n->right= right;
+}//Getters and Setters for the Struct Node
+Node * GetHuffHead(Huff * h)
+{
+    return  h->head;
+}
+
+void SetHuffHead(Huff * h, Node * head)
+{
+    h->head = head;
+}
+
+int GetHuffSize(Huff * h)
+{
+    return  h->size;
+}
+
+void SetHuffSize(Huff * h, int size)
+{
+    h->size= size;
+}//Getters and Setters for the Struct HUFF
 Huff * NewHuff() {
-
 	Huff * newHuff = (Huff*) malloc(sizeof(Huff));
 	newHuff->head = NULL;
 	newHuff->size = 0;
-
 	return newHuff;
-}
-
+} // Creates an empty Huffman Tree.
 Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
@@ -34,23 +86,17 @@ Huff * MakeTree(unsigned int * frequencias) {
 			AddNode(huff, NewNode(i, frequencias[i]));
 		}
 	}
-    //PrintList(huff->head);
-	while(huff->size > 1) {
-
+	while(huff->size > 1)
+    {
 		Node * esquerda = PopNode(huff);
-    //    printf("Esquerda %c\n", esquerda->c);
 		Node * direita = PopNode(huff);
-     //   printf("Direita %c\n", direita->c);
 		Node * soma = NewNode('*', (esquerda->freq + direita->freq));
 		soma->left = esquerda;
 		soma->right = direita;
 		AddNode(huff, soma);
-      //  PrintList(huff->head);
 	}
-   // PrintPreOrder(huff->head);
 	return huff;
-}
-
+} // Given the frequency list of Bytes, this method Generates the Huffman Tree. Returns the New Tree.
 Node * NewNode(unsigned char c, int freq) {
     Node * newNode = (Node*) malloc(sizeof(Node));
     newNode->c = c;
@@ -60,8 +106,7 @@ Node * NewNode(unsigned char c, int freq) {
     newNode->next = NULL;
 
     return newNode;
-}
-
+} //Given the Node's Atribbutes, It generates a new HuffMan's Tree Node. Returns the New Node.
 Node * PopNode(Huff * huff) {
 	Node * temp = huff->head;
     if (huff->size==1) {
@@ -73,40 +118,16 @@ Node * PopNode(Huff * huff) {
 	huff->head = temp->next;
 	huff->size--;
 	return temp;
-}
-
-void PrintList(Node * node)
-{
+} //Pops the first node of a Huffman's tree. Returns the deleted Node.
+void PrintList(Node * node) {
     while (node!=NULL)
     {
         printf("(%c %d) ",node->c,node->freq);
         node = node->next;
     }
     printf("\n");
-}
+} // TO BE REMOVED.
 void AddNode(Huff * huff, Node * newNode) {
-
-  /*  printf("Addando %c\n", newNode->c);
-    (huff->size)++;
-	if(huff->head == NULL) {
-		huff->head = newNode;
-	} else {
-		Node * i;
-    	for(i = huff->head; i != NULL; i = i->next) {
-        	if(i->next == NULL) {
-            	i->next = newNode;
-
-            	return;
-        	}
-        	if((i->next->freq > newNode->freq) && (i->freq < newNode->freq)) {
-            	newNode->next = i->next;
-            	i->next = newNode;
-
-            	return;
-        	}
-    	}
-	}*/
-
     if (huff->size == 0) // Lista vazia
     {
         huff->head = newNode;
@@ -149,48 +170,31 @@ void AddNode(Huff * huff, Node * newNode) {
         }
 
     }
-}
-
-void GeraTabelaConversao(Node*head, Tabela ** tabela, ElementoTabela ** percurso)
-{
+} // Adds a Node to a given Huffman's Tree in ascending order.
+void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percurso) {
    //Condições de parada.
     // Se for folha, deve salvar percurso e subir.
     if ((head->left==NULL)&&(head->right==NULL))
     {
         ElementoTabela * tabela_element;
-        //Linha * nova = CreateCopiaLinha(*percurso);
-       // (((*tabela)->elems)[head->c])-> front= nova;
-
-         //((*tabela)->elems)[head->c] = CreateCopiaElemento((*percurso)->front);
-         //((*tabela)->elems)[head->c]->size = (*percurso)->size;
-        tabela_element = CreateCopiaElemento(getElementoTabelaFront(*percurso));
-        setElementoTabelaSize(tabela_element, getElementoTabelaSize(*percurso));
+        tabela_element = CreateElementCopy(GetElementoTabelaFront(*percurso));
+        SetElementoTabelaSize(tabela_element, GetElementoTabelaSize(*percurso));
         Dequeue(*percurso);
         return;
     }
     Enqueue(*percurso,'0');
-    GeraTabelaConversao(head->left, tabela, percurso);
+    CreatesConversionTable(head->left, tabela, percurso);
 
     Enqueue(*percurso,'1');
-    GeraTabelaConversao(head->right, tabela, percurso);
+    CreatesConversionTable(head->right, tabela, percurso);
 
     Dequeue(*percurso);
-}
 
+} //Creates a Conversion table to speed up the process of encoding. Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empy Elemento Tabela representing the navigation of the tree.
 void PrintPreOrder(Node * head) {
 	if(head != NULL) {
 		printf("%c", head->c);
 		PrintPreOrder(head->left);
 		PrintPreOrder(head->right);
 	}
-}
-
-Node * getTreeHead(Huff * tree) {
-
-    return tree->head;
-}
-
-int getTreeSize(Huff * tree) {
-
-    return tree->size;
-}
+}//Prints the given Huffman's Tree in Preorder transversal.

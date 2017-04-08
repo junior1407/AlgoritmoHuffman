@@ -13,7 +13,7 @@ ElementoTabela * CreateElementoTabela();
 Linha * CreateLinha(char i);
 void Enqueue(ElementoTabela * elem, char i);
 char Dequeue(ElementoTabela * elem);
-ElementoTabela * CreateCopiaElemento(Linha * head);
+ElementoTabela * CreateElementCopy(Linha * head);
 void PrintLinha(Linha * linha);
 /*
  * Have a ElementoTabela type, 'elemento_tabela', as a parameter;
@@ -36,4 +36,21 @@ void setElementoTabelaSize(ElementoTabela * elemento_tabela, int value);
  */
 ElementoTabela * getTabelaElem(Tabela * tabela, int index);
 
+////Gets and Sets for the Struct "Linha".
+char GetLinhaI(Linha * l);
+void SetLinhaI(Linha * l, char i);
+Linha * GetLinhaNext(Linha * l);
+void SetLinhaNext(Linha * l, Linha * next);
+
+//Gets and Sets for the Struct "ElementoTabela".
+int GetElementoTabelaSize(ElementoTabela * elem);
+void SetElementoTabelaSize(ElementoTabela * elem, int size);
+Linha * GetElementoTabelaFront(ElementoTabela * elem);
+void SetElementoTabelaFront(ElementoTabela * elem, Linha * front );
+Linha * GetElementoTabelaRear(ElementoTabela * elem);
+void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
+
+//Gets and Sets from the Struct "Tabela"
+ElementoTabela ** GetTabelaElements(Tabela * tabela);
+void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos);
 #endif
