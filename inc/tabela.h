@@ -4,39 +4,37 @@
 #ifndef TABELA_H
 #define TABELA_H
 
+// Data Structure for the informantion about the enconding of each byte.
 typedef struct ElementoTabela ElementoTabela;
+
+// Data Structure for the Conversion Table.
 typedef struct Tabela Tabela;
+
+// Data Structure to manage Encoding Codes.
 typedef struct Linha Linha;
 
+// Creates an empty Conversion Table.
 Tabela * CreateTabela();
-ElementoTabela * CreateElementoTabela();
-Linha * CreateLinha(char i);
-void Enqueue(ElementoTabela * elem, char i);
-char Dequeue(ElementoTabela * elem);
-ElementoTabela * CreateElementCopy(Linha * head);
-void PrintLinha(Linha * linha);
-/*
- * Have a ElementoTabela type, 'elemento_tabela', as a parameter;
- * Returns a pointer to Linha type of the 'elemento_tabela->front'.
- */
-Linha * getElementoTabelaFront(ElementoTabela * elemento_tabela);
-/*
- * Have a ElementoTabela type, 'elemento_tabela', as a parameter;
- * Returns a int with the 'elemento_tablea->size'.
- */
-int getElementoTabelaSize(ElementoTabela * elemento_tabela);
-/*
- * Have a ElementoTabela type, 'elemento_tabela', and a int, 'value', as a parameters;
- * Set the 'elemento_tablea->size' with the 'value' value.
- */
-void setElementoTabelaSize(ElementoTabela * elemento_tabela, int value);
-/*
- * Have a Tabela type, 'tabela', and a int, 'index', as a parameters;
- * Returns a ElementoTabela type of the respective index from the 'tabela'.
- */
-ElementoTabela * getTabelaElem(Tabela * tabela, int index);
 
-////Gets and Sets for the Struct "Linha".
+//Creates an empty "ElementoTabela".
+ElementoTabela * CreateElementoTabela();
+
+// Creates a "Linha" given an char containing '0' or '1'.
+Linha * CreateLinha(char i);
+
+// Adds a '0' or '1' to a given "ElementoTabela" representing the enconding of a byte.
+void Enqueue(ElementoTabela * elem, char i);
+
+// Removes the last bit of a given enconding. Returns the deleted bit.
+char Dequeue(ElementoTabela * elem);
+
+// Creates a copy of a given enconding to a new "ElementoTabela".
+ElementoTabela * CreateElementCopy(Linha * head);
+
+//Prints the entire "Linha".
+void PrintLinha(Linha * linha);
+
+//Gets and Sets for the Struct "Linha".
 char GetLinhaI(Linha * l);
 void SetLinhaI(Linha * l, char i);
 Linha * GetLinhaNext(Linha * l);
@@ -50,7 +48,8 @@ void SetElementoTabelaFront(ElementoTabela * elem, Linha * front );
 Linha * GetElementoTabelaRear(ElementoTabela * elem);
 void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
 
-//Gets and Sets from the Struct "Tabela"
+//Gets and Sets from the Struct "Tabela".
 ElementoTabela ** GetTabelaElements(Tabela * tabela);
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos);
+
 #endif
