@@ -1,7 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "inc/huff.h"
 #include "inc/tabela.h"
+#include "inc/binary.h"
 typedef unsigned char byte;
+
+byte * ReadFile(FILE * file, int numBytes)
+{
+    byte * array = (byte *) malloc(sizeof(byte)*(numBytes+1));
+    int i;
+    for (i=0; i<numBytes; i++)
+    {
+        fread((&(array[i]) ) ,1,1,file);
+    }
+    array[numBytes]='\0';
+    return  array;
+}
+
+
+char * GetNBits(byte b,  int frente, int n){ // Sempre joga para os n primeiros
+    char * array = (char *) malloc(sizeof(char)*(n+1));
+    if (frente){
+        b = b>>(8-n);
+        b= b<<(8-n);}
+    else
+        b=b<<(8-n);
+
+    int i,j;
+    for(i=7,j=0; i>=0;i--,j++)
+    {
+        if (is_bit_i_set(b,i)==0)
+            array[j]='0';
+        else
+            array[j]='1';
+    }
+    array[n] = '\0';
+    return array;
+
+}
+
 
 void GetFrequency(FILE * file, unsigned  int * frequencias){
     byte atual;
@@ -12,6 +49,9 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
     rewind(file);
     return;
 }
+
+
+
 
 int Compress(){
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
@@ -35,6 +75,14 @@ int Compress(){
 }
 void Decompress()
 {
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    byte * b = (ReadFile(file,2));
+    int lixo = BinaryToInteger(GetNBits(b[0],1,3));
+    char * tamanho_1 = GetNBits(b[0],0,5);
+    char * tamanho_2 = GetNBits(b[1],1,8);
+    printf("tamanho 1: %s e tamanho 2 %s\n",tamanho_1,tamanho_2);
+    printf("Lixo %d",lixo)  ;
+    fclose(file);
     // Ler Cabecalho.
     // MakeTree a partir da Preorder.
     //
@@ -46,6 +94,7 @@ void Decompress()
 
 int main()
 {
-    Compress();
+    //Compress();
+    Decompress();
     return 0;
 }
