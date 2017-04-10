@@ -62,7 +62,6 @@ void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
 ElementoTabela * GetTabelaElement(Tabela * tabela, int index);
 ElementoTabela ** GetTabelaElements(Tabela * tabela);
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos);
-ElementoTabela * GetTabelaElement(Tabela * tabela, int pos);
 
 
 #endif

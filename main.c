@@ -91,7 +91,7 @@ int Compress(){
     rewind(file);
     FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
     unsigned char in;
-    unsigned char out;
+    unsigned char out='\0';
     //int lixo;
     Linha * atual;
     int estado_bit=7;
@@ -105,7 +105,7 @@ int Compress(){
             estado_bit--;
             if (estado_bit==-1)
             {
-                fwrite(out,1,1,novo);
+             //   fwrite(out,1,1,novo);
 
             }
             //Condição recriar bit.
@@ -113,6 +113,8 @@ int Compress(){
         }
 
     }
+
+
 
 
 
