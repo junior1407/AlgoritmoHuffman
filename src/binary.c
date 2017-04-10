@@ -18,7 +18,7 @@ unsigned char set_bit(unsigned char c, int i)
 
 unsigned char * IntegerToBinary(int integer, int string_size) {
 
-    char* binary_number = (char*)malloc(sizeof(char)*(string_size+1));
+    unsigned char* binary_number = (unsigned char*)malloc(sizeof(unsigned char)*(string_size+1));
     int i, rest;
     int flag = 0;
     rest = integer%2;
@@ -50,7 +50,7 @@ unsigned char * IntegerToBinary(int integer, int string_size) {
 int BinaryToInteger(unsigned char* binary_number) {
 
     int number = 0;
-    int string_size = strlen(binary_number);
+    int string_size = strlen((char*)binary_number);
     int i, j;
     for(i = string_size-1, j = 0; i >= 0; --i, ++j) {
         if(binary_number[i] == '1') {
@@ -60,11 +60,11 @@ int BinaryToInteger(unsigned char* binary_number) {
     return number;
 }
 
-char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao) {
+unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao) {
 
     int total_bits = 0;
     int bits;
-    char* trash;
+    unsigned char * trash;
     int i;
     for(i = 0; i < 256; ++i) {
         if(frequencias[i] > 0) {
@@ -76,18 +76,18 @@ char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao) {
     return trash;
 }
 
-char * TreeSizeBinary(Huff * tree) {
+unsigned char * TreeSizeBinary(Huff * tree) {
 
     int tree_size = HowManyNodes(GetHuffHead(tree));
-    char * binary_tree_size = IntegerToBinary(tree_size, 13);
+    unsigned char * binary_tree_size = IntegerToBinary(tree_size, 13);
     return binary_tree_size;
 }
 
-void PrintBinaryToCharacter(char * string, FILE * new_file) {
+void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
 
-    char* str_8bits = (char*)malloc(sizeof(char)*9);
+    unsigned char* str_8bits = (unsigned char*)malloc(sizeof(unsigned char)*9);
     str_8bits[8] = '\0';
-    int string_size = strlen(string);
+    int string_size = strlen((char*)string);
     int rest_flag = (string_size - (string_size%8));
     int bit_position = 0, str_position = 0;
     while(str_position < rest_flag) {
