@@ -17,6 +17,8 @@ Huff * NewHuff();
 // Given the frequency list of Bytes, this method Generates the Huffman Tree. Returns the New Tree.
 Huff * MakeTree(unsigned int * frequencias);
 
+
+int IsLeaf(Node * check);
 //Given the Node's Atribbutes, It generates a new HuffMan's Tree Node. Returns the New Node.
 Node * NewNode(unsigned char c, int freq);
 
@@ -41,6 +43,9 @@ void PrintList(Node * node); // TO BE REMOVED.
 //It receives a Node * type, 'node', as a parameter and returns a int with the tree size (total number of nodes);
 int HowManyNodes(Node * node);
 
+
+Huff * MakeTreeFromPreOrder(unsigned char * array, int size);
+Node * NavigateTree(Node * atual, int direcao);
 //Getters and Setters for the Struct Node
 unsigned char GetNodeC(Node *n);
 void SetNodeC(Node * n, unsigned char c);
@@ -52,6 +57,8 @@ Node * GetNodeLeft(Node * n);
 void SetNodeLeft(Node * n, Node * left);
 Node * GetNodeRight(Node * n);
 void SetNodeRight(Node * n, Node * right);
+
+
 
 //Getters and Setters for the Struct HUFF
 Node * GetHuffHead(Huff * h);

@@ -134,6 +134,7 @@ int Compress(){
 void Decompress()
 {
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    FILE * saida = fopen("C:\\Users\\Valdir Jr\\Desktop\\out.txt","wb");
     byte * b = (ReadFile(file,2));  // Array de 2 bytes.
     char * bits_lixo = GetNBits(b[0],FRENTE,8);
     printf("Lixo: %s\n",bits_lixo);
@@ -151,15 +152,30 @@ void Decompress()
  //   byte vazio = (byte) 0;
     byte * preorder = ReadFile(file, sizeTree);
 
-    //Huff * MakeTreeFromPreOrder(unsigned char * array, int size);
+    //Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
     Huff * tree = NULL;
-    byte in;
-    while (fread(&atual, 1, 1, file) >= 1)
+    byte in; // Byte com seus bits zero.
+    byte out = (byte)0;
+    byte curr; // Byte A ser Impresso.
+    int estado_bit= 7;
+    Node * atual = GetHuffHead(tree);
+    while (fread(&in, 1, 1, file) >= 1)
     {
-
-
-
-
+        if (estado_bit==-1)
+        {
+            estado_bit=7;
+        }
+        do {
+            if (IsLeaf(atual))
+            {
+                curr = GetNodeC(atual);
+                fwrite(&curr , 1 , sizeof(unsigned char) , saida );
+                atual = GetHuffHead(tree);
+            }
+            atual = NavigateTree(atual, is_bit_i_set(in, estado_bit) == 0 ? 0 : 1);
+            estado_bit--;
+        }
+        while(estado_bit>=0);
     }
     fclose(file);
 
