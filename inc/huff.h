@@ -1,8 +1,9 @@
 #ifndef HUFF_H
 #define HUFF_H
 
-#include <stdio.h>
 #include "tabela.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // Data Structure for the Huffman Tree.
 typedef struct Huff Huff;
@@ -26,8 +27,8 @@ Node * PopNode(Huff * huff);
 void AddNode(Huff * huff, Node * newNode);
 
 void AddNodeInterno(Huff * huff, Node * newNode);
-//Prints the given Huffman's Tree in Preorder transversal.
-void PrintPreOrder(Node * head);
+//Prints the given Huffman's Tree in Preorder transversal in the file 'new_file'.
+void PrintPreOrder(Node * head, FILE * new_file);
 
 /*
  *Creates a Conversion table to speed up the process of encoding.
@@ -36,7 +37,9 @@ void PrintPreOrder(Node * head);
 void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percurso);
 
 void PrintList(Node * node); // TO BE REMOVED.
-int HowManyNodes(int count, Node * node);
+
+//It receives a Node * type, 'node', as a parameter and returns a int with the tree size (total number of nodes);
+int HowManyNodes(Node * node);
 
 //Getters and Setters for the Struct Node
 unsigned char GetNodeC(Node *n);

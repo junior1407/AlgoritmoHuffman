@@ -4,6 +4,10 @@
 #ifndef TABELA_H
 #define TABELA_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 // Data Structure for the informantion about the enconding of each byte.
 typedef struct ElementoTabela ElementoTabela;
 
@@ -36,6 +40,9 @@ Linha * PopFrontElementoTabela(ElementoTabela * elem);
 //Prints the entire "Linha".
 void PrintLinha(Linha * linha);
 
+//It receives an ElementoTabela *, 'requested_route', and returns a string with the respective binary route (Linha->char).
+char * GetConvertedBits(ElementoTabela * requested_route);
+
 //Gets and Sets for the Struct "Linha".
 char GetLinhaI(Linha * l);
 void SetLinhaI(Linha * l, char i);
@@ -52,6 +59,7 @@ void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
 
 
 //Gets and Sets from the Struct "Tabela".
+ElementoTabela * GetTabelaElement(Tabela * tabela, int index);
 ElementoTabela ** GetTabelaElements(Tabela * tabela);
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos);
 ElementoTabela * GetTabelaElement(Tabela * tabela, int pos);
