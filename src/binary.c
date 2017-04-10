@@ -2,6 +2,7 @@
 // Created by Pedro on 06/04/2017.
 //
 #include "../inc/binary.h"
+
 int is_bit_i_set(unsigned char c, int i)
 {
     unsigned char mask = 1 << i;
