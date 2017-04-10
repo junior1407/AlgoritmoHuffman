@@ -133,7 +133,11 @@ int IsLeaf(Node * check) {
 int HowManyNodes(Node * node) {
 
     if(node != NULL) {
-        return (1 + HowManyNodes(node->left) + HowManyNodes(node->right));
+    	if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
+    		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));
+    	} else {
+        	return (1 + HowManyNodes(node->left) + HowManyNodes(node->right));
+    	}
     }
     return 0;
 }
