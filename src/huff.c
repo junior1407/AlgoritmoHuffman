@@ -20,6 +20,31 @@ Huff * NewHuff() {
 	return newHuff;
 }
 
+int IsLeaf(Node * check) {
+    	if((check->left == NULL) && (check->right == NULL)) {
+            return 1;
+        }
+	return 0;
+}
+
+
+Node * NavigateTree(Node * atual, int direcao)
+{
+    if (direcao == 0)
+    {
+        return atual->left;
+    }
+    else
+    {
+        return  atual->right;
+    }
+
+
+
+}
+
+
+
 Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
@@ -130,7 +155,7 @@ int IsLeaf(Node * check) {
 	return 0;
 }
 
-int HowManyNodes(Node * node) {
+    int HowManyNodes(Node * node) {
 
     if(node != NULL) {
     	if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
