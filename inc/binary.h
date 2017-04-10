@@ -37,9 +37,9 @@ char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao);
 char * TreeSizeBinary(Huff * tree);
 
 /*
- * It receives as parameter an string of a binary number;
- * Convert in bytes and print the corresponding characters.
+ * It receives as parameters an string(char *), 'string',of a binary number, and a FILE * 'new_file';
+ * Convert in bytes and print in the 'new_file' the corresponding characters.
  */
-void PrintBinaryToCharacter(char * string);
+void PrintBinaryToCharacter(char * string, FILE * new_file);
 
 #endif

@@ -27,8 +27,8 @@ Node * PopNode(Huff * huff);
 void AddNode(Huff * huff, Node * newNode);
 
 void AddNodeInterno(Huff * huff, Node * newNode);
-//Prints the given Huffman's Tree in Preorder transversal.
-void PrintPreOrder(Node * head);
+//Prints the given Huffman's Tree in Preorder transversal in the file 'new_file'.
+void PrintPreOrder(Node * head, FILE * new_file);
 
 /*
  *Creates a Conversion table to speed up the process of encoding.

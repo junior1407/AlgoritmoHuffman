@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "inc/tabela.h"
 #include "inc/huff.h"
 #include "inc/binary.h"
@@ -32,18 +32,19 @@ char * ConcatString(char * str1, char * str2, int new_str_size) {
     return new_str;
 }
 
-void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conversao) {
+void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file) {
 
     char * trash = TrashBinary(frequencias, tabela_conversao);
     char * tree_size = TreeSizeBinary(tree);
     char * first_16bits = ConcatString(trash, tree_size, 16);
 
-    PrintBinaryToCharacter(first_16bits);
-    PrintPreOrder(GetHuffHead(tree));
+    PrintBinaryToCharacter(first_16bits, new_file);
+    PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
 int Compress(){
-    FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","rb");
+    FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","r");
+    FILE * new_file = fopen("C:\\Git\\AlgoritmoHuffman\\comp_files\\new_file", "w");
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
@@ -51,12 +52,7 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
 
-    PrintHeader(frequencias, tree, tabelaConversao);
-    //Criação do Cabeçalho:
-    //1º Cálculo Lixo. 401 bits % 8 = 1 bits,  8 -1 = 7 bits de lixo.  (IMPRIMIR NO ARQUIVO)
-    //2º Converte Inteiro para Binário. retorna char [3]
-    //3º Função Percorre Arvore contando nós. Converter para binário em 13 bits
-    // IMPRIME PREOREDER
+    PrintHeader(frequencias, tree, tabelaConversao, new_file);
     //Impressão dos Dados:
     // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
     fclose(file);

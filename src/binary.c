@@ -25,7 +25,7 @@ char * IntegerToBinary(int integer, int string_size) {
             }
             rest = integer%2;
             integer = integer/2;
-        } else if(integer == 0 && !flag) {
+        } else if(!flag) {
             if(rest) {
                 binary_number[i] = '1';
             } else {
@@ -76,7 +76,7 @@ char * TreeSizeBinary(Huff * tree) {
     return binary_tree_size;
 }
 
-void PrintBinaryToCharacter(char * string) {
+void PrintBinaryToCharacter(char * string, FILE * new_file) {
 
     char* str_8bits = (char*)malloc(sizeof(char)*9);
     str_8bits[8] = '\0';
@@ -89,7 +89,7 @@ void PrintBinaryToCharacter(char * string) {
         str_position++;
         if(bit_position == 8) {
             bit_position = 0;
-            printf("%c", BinaryToInteger(str_8bits));
+            fprintf(new_file, "%c", BinaryToInteger(str_8bits));
         }
     }
     if(string_size - rest_flag) {
@@ -104,6 +104,6 @@ void PrintBinaryToCharacter(char * string) {
                 str_8bits[i] = '0';
             }
         }
-        printf("%c", BinaryToInteger(str_8bits));
+        fprintf(new_file, "%c", BinaryToInteger(str_8bits));
     }
 }

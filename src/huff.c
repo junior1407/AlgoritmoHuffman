@@ -109,11 +109,11 @@ void AddNode(Huff * huff, Node * newNode) {
     }
 }
 
-void PrintPreOrder(Node * head) {
+void PrintPreOrder(Node * head, FILE * new_file) {
 	if(head != NULL) {
-		printf("%c", head->c);
-		PrintPreOrder(head->left);
-		PrintPreOrder(head->right);
+		fprintf(new_file, "%c", head->c);
+		PrintPreOrder(head->left, new_file);
+		PrintPreOrder(head->right, new_file);
 	}
 }
 
