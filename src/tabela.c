@@ -171,12 +171,6 @@ ElementoTabela ** GetTabelaElements(Tabela * tabela) {
     return tabela->elems;
 }
 
-ElementoTabela * GetTabelaElement(Tabela * tabela, int pos)
-{
-    return tabela->elems[pos];
-}
-
-
 Linha * PopFrontElementoTabela(ElementoTabela * elem)
 {
     int size;
