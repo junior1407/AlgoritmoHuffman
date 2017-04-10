@@ -1,10 +1,45 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "inc/tabela.h"
 #include "inc/huff.h"
 #include "inc/binary.h"
-
 typedef unsigned char byte;
+
+byte * ReadFile(FILE * file, int numBytes)
+{
+    byte * array = (byte *) malloc(sizeof(byte)*(numBytes+1));
+    int i;
+    for (i=0; i<numBytes; i++)
+    {
+        fread((&(array[i]) ) ,1,1,file);
+    }
+    array[numBytes]='\0';
+    return  array;
+}
+
+
+char * GetNBits(byte b,  int frente, int n){ // Sempre joga para os n primeiros
+    char * array = (char *) malloc(sizeof(char)*(n+1));
+    if (frente){
+        b = b>>(8-n);
+        b= b<<(8-n);}
+    else
+        b=b<<(8-n);
+
+    int i,j;
+    for(i=7,j=0; i>=0;i--,j++)
+    {
+        if (is_bit_i_set(b,i)==0)
+            array[j]='0';
+        else
+            array[j]='1';
+    }
+    array[n] = '\0';
+    return array;
+
+}
+
 
 void GetFrequency(FILE * file, unsigned  int * frequencias){
     byte atual;
@@ -15,6 +50,7 @@ void GetFrequency(FILE * file, unsigned  int * frequencias){
     rewind(file);
     return;
 }
+
 
 char * ConcatString(char * str1, char * str2, int new_str_size) {
 
@@ -42,6 +78,7 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
     PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
+
 int Compress(){
     FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","r");
     FILE * new_file = fopen("C:\\Git\\AlgoritmoHuffman\\comp_files\\new_file", "w");
@@ -51,6 +88,34 @@ int Compress(){
     Tabela * tabelaConversao = CreateTabela();
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
+    rewind(file);
+    FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
+    unsigned char in;
+    unsigned char out;
+    //int lixo;
+    Linha * atual;
+    int estado_bit=7;
+    while (fread(&in, 1, 1, file) >= 1)
+    {
+        ElementoTabela * codificacao = GetTabelaElement(tabelaConversao, in);
+        while (GetElementoTabelaSize(codificacao)>=1)
+        {
+            atual = PopFrontElementoTabela(codificacao);
+            set_bit(out, estado_bit);
+            estado_bit--;
+            if (estado_bit==-1)
+            {
+                fwrite(out,1,1,novo);
+
+            }
+            //Condição recriar bit.
+
+        }
+
+    }
+
+
+
 
     PrintHeader(frequencias, tree, tabelaConversao, new_file);
     //Impressão dos Dados:
@@ -60,6 +125,15 @@ int Compress(){
 }
 void Decompress()
 {
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    byte * b = (ReadFile(file,2));
+    int lixo = BinaryToInteger(GetNBits(b[0],1,3));
+    char * tamanho_1 = GetNBits(b[0],0,5);
+    char * tamanho_2 = GetNBits(b[1],1,8);
+    printf("tamanho 1: %s e tamanho 2 %s\n",tamanho_1,tamanho_2);
+    printf("Lixo %d",lixo)  ;
+    fclose(file);
+
     // Ler Cabecalho.
     // MakeTree a partir da Preorder.
     //
@@ -71,6 +145,7 @@ void Decompress()
 
 int main()
 {
-    Compress();
+    //Compress();
+    //Decompress();
     return 0;
 }

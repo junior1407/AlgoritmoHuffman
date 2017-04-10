@@ -9,7 +9,14 @@ int is_bit_i_set(unsigned char c, int i)
     return mask & c;
 }
 
-char * IntegerToBinary(int integer, int string_size) {
+unsigned char set_bit(unsigned char c, int i)
+{
+    unsigned char mask = 1 << i;
+    return mask | c;
+
+}
+
+unsigned char * IntegerToBinary(int integer, int string_size) {
 
     char* binary_number = (char*)malloc(sizeof(char)*(string_size+1));
     int i, rest;
@@ -36,11 +43,11 @@ char * IntegerToBinary(int integer, int string_size) {
             binary_number[i] = '0';
         }
     }
-    binary_number[string_size] = '\0';
+   // binary_number[string_size] = '\0';
     return binary_number;
 }
 
-int BinaryToInteger(char* binary_number) {
+int BinaryToInteger(unsigned char* binary_number) {
 
     int number = 0;
     int string_size = strlen(binary_number);
