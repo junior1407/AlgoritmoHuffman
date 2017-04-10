@@ -111,10 +111,23 @@ void AddNode(Huff * huff, Node * newNode) {
 
 void PrintPreOrder(Node * head, FILE * new_file) {
 	if(head != NULL) {
-		fprintf(new_file, "%c", head->c);
-		PrintPreOrder(head->left, new_file);
-		PrintPreOrder(head->right, new_file);
+		if((head->c == '*') || (head->c == '\\') && IsLeaf(head)) {
+			fprintf(new_file, "\\%c", head->c);
+			PrintPreOrder(head->left, new_file);
+			PrintPreOrder(head->right, new_file);
+		} else {
+			fprintf(new_file, "%c", head->c);
+			PrintPreOrder(head->left, new_file);
+			PrintPreOrder(head->right, new_file);
+		}
 	}
+}
+
+int IsLeaf(Node * check) {
+	if((check->left == NULL) && (check->right == NULL)) {
+		return 1;
+	}
+	return 0;
 }
 
 int HowManyNodes(Node * node) {
