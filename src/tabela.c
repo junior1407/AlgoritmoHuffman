@@ -2,9 +2,6 @@
 // Created by Valdir Jr on 06/04/2017.
 //
 #include "../inc/tabela.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 struct Linha{
     char i;
@@ -40,7 +37,6 @@ ElementoTabela * CreateElementoTabela() {
     ElementoTabela * novo = (ElementoTabela*)malloc(sizeof(ElementoTabela));
     novo->size=0;
     novo->front=NULL;
-    novo->rear=NULL;
     return  novo;
 }
 
@@ -48,7 +44,7 @@ Tabela * CreateTabela() {
     Tabela * novo = (Tabela *)malloc(sizeof(Tabela));
     novo->elems = (ElementoTabela **)malloc(256* sizeof(ElementoTabela));
     int i;
-    for (i=0; i<256;i++)
+    for (i = 0; i < 256; i++)
     {
         (novo->elems)[i] = CreateElementoTabela();
     }
@@ -110,6 +106,22 @@ char Dequeue(ElementoTabela * elem) {
     }
 }
 
+char * GetConvertedBits(ElementoTabela * requested_route) {
+
+    int route_size = requested_route->size;
+    int position = 0;
+    char* bits = (char*)malloc(sizeof(char)*(route_size+1));
+    Linha * current_bit = requested_route->front;
+    while(route_size > 0) {
+        bits[position] = current_bit->i;
+        current_bit = current_bit->next;
+        position++;
+        route_size--;
+    }
+    bits[route_size] = '\0';
+    return bits;
+}
+
 char GetLinhaI(Linha * l) {
     return l->i;
 }
@@ -148,6 +160,11 @@ Linha * GetElementoTabelaRear(ElementoTabela * elem) {
 
 void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear ) {
     elem->rear = rear;
+}
+
+ElementoTabela * GetTabelaElement(Tabela * tabela, int index) {
+
+    return tabela->elems[index];
 }
 
 ElementoTabela ** GetTabelaElements(Tabela * tabela) {
