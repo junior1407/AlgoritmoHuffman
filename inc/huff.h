@@ -27,9 +27,12 @@ Node * PopNode(Huff * huff);
 void AddNode(Huff * huff, Node * newNode);
 
 void AddNodeInterno(Huff * huff, Node * newNode);
+
 //Prints the given Huffman's Tree in Preorder transversal in the file 'new_file'.
 void PrintPreOrder(Node * head, FILE * new_file);
 
+//Given an "*" or "\" node return if is a leaf or not.
+int IsLeaf(Node * check);
 /*
  *Creates a Conversion table to speed up the process of encoding.
  *Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empy Elemento Tabela representing the navigation of the tree.
