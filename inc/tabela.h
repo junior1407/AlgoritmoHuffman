@@ -35,6 +35,8 @@ char Dequeue(ElementoTabela * elem);
 // Creates a copy of a given enconding to a new "ElementoTabela".
 ElementoTabela * CreateElementCopy(Linha * head);
 
+Linha * PopFrontElementoTabela(ElementoTabela * elem);
+
 //Prints the entire "Linha".
 void PrintLinha(Linha * linha);
 
@@ -55,9 +57,12 @@ void SetElementoTabelaFront(ElementoTabela * elem, Linha * front );
 Linha * GetElementoTabelaRear(ElementoTabela * elem);
 void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
 
+
 //Gets and Sets from the Struct "Tabela".
 ElementoTabela * GetTabelaElement(Tabela * tabela, int index);
 ElementoTabela ** GetTabelaElements(Tabela * tabela);
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos);
+ElementoTabela * GetTabelaElement(Tabela * tabela, int pos);
+
 
 #endif
