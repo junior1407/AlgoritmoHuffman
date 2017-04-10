@@ -154,6 +154,32 @@ ElementoTabela ** GetTabelaElements(Tabela * tabela) {
     return tabela->elems;
 }
 
+ElementoTabela * GetTabelaElement(Tabela * tabela, int pos)
+{
+    return tabela->elems[pos];
+}
+
+
+Linha * PopFrontElementoTabela(ElementoTabela * elem)
+{
+    int size;
+    struct Linha * front;
+    struct Linha * rear;
+    Linha * aux = elem->front;
+    if (size==1)
+    {
+        (elem->size)--;
+        elem->front=NULL;
+        elem->rear=NULL;
+        return aux;
+    }
+    (elem->size)--;
+    elem->front = elem->front->next;
+    return  aux;
+
+}
+
+
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos) {
     tabela->elems[pos] = elemento;
 }

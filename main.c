@@ -61,6 +61,34 @@ int Compress(){
     Tabela * tabelaConversao = CreateTabela();
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
+    rewind(file);
+    FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
+    unsigned char in;
+    unsigned char out;
+    //int lixo;
+    Linha * atual;
+    int estado_bit=7;
+    while (fread(&in, 1, 1, file) >= 1)
+    {
+        ElementoTabela * codificacao = GetTabelaElement(tabelaConversao, in);
+        while (GetElementoTabelaSize(codificacao)>=1)
+        {
+            atual = PopFrontElementoTabela(codificacao);
+            set_bit(out, estado_bit);
+            estado_bit--;
+            if (estado_bit==-1)
+            {
+                fwrite(out,1,1,novo);
+
+            }
+            //Condição recriar bit.
+
+        }
+
+    }
+
+
+
 
 
     //Criação do Cabeçalho:
@@ -83,6 +111,7 @@ void Decompress()
     printf("tamanho 1: %s e tamanho 2 %s\n",tamanho_1,tamanho_2);
     printf("Lixo %d",lixo)  ;
     fclose(file);
+
     // Ler Cabecalho.
     // MakeTree a partir da Preorder.
     //
@@ -95,6 +124,6 @@ void Decompress()
 int main()
 {
     //Compress();
-    Decompress();
+    //Decompress();
     return 0;
 }

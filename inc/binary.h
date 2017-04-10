@@ -4,6 +4,8 @@
 #ifndef BINARY_H
 #define BINARY_H
 
+
+unsigned char set_bit(unsigned char c, int i);
 int is_bit_i_set(unsigned char c, int i);
 
 /*
