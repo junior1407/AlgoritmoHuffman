@@ -148,17 +148,11 @@ void PrintPreOrder(Node * head, FILE * new_file) {
 	}
 }
 
-int IsLeaf(Node * check) {
-	if((check->left == NULL) && (check->right == NULL)) {
-		return 1;
-	}
-	return 0;
-}
 
     int HowManyNodes(Node * node) {
 
     if(node != NULL) {
-    	if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
+    	if(((node->c == '*') || (node->c == '\\')) && IsLeaf(node)) {
     		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));
     	} else {
         	return (1 + HowManyNodes(node->left) + HowManyNodes(node->right));
