@@ -117,7 +117,7 @@ void PrintPreOrder(Node * head, FILE * new_file) {
 	}
 }
 
-int HowManyNodes(Node * node) {
+    int HowManyNodes(Node * node) {
 
     if(node != NULL) {
         return (1 + HowManyNodes(node->left) + HowManyNodes(node->right));

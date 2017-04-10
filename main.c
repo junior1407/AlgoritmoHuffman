@@ -4,7 +4,10 @@
 #include "inc/tabela.h"
 #include "inc/huff.h"
 #include "inc/binary.h"
+#define FRENTE 1
+#define TRAS 0
 typedef unsigned char byte;
+
 
 byte * ReadFile(FILE * file, int numBytes)
 {
@@ -19,9 +22,9 @@ byte * ReadFile(FILE * file, int numBytes)
 }
 
 
-char * GetNBits(byte b,  int frente, int n){ // Sempre joga para os n primeiros
+char * GetNBits(byte b,  int frente_tras, int n){ // Sempre joga para os n primeiros
     char * array = (char *) malloc(sizeof(char)*(n+1));
-    if (frente){
+    if (frente_tras == FRENTE){
         b = b>>(8-n);
         b= b<<(8-n);}
     else
@@ -89,7 +92,10 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
-    FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
+
+
+
+   /* FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
     unsigned char in;
     unsigned char out='\0';
     //int lixo;
@@ -102,7 +108,7 @@ int Compress(){
         {
             atual = PopFrontElementoTabela(codificacao);
             set_bit(out, estado_bit);
-            estado_bit--;
+            estado_bit--;\
             if (estado_bit==-1)
             {
              //   fwrite(out,1,1,novo);
@@ -114,7 +120,7 @@ int Compress(){
 
     }
 
-
+*/
 
 
 
@@ -128,12 +134,33 @@ int Compress(){
 void Decompress()
 {
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
-    byte * b = (ReadFile(file,2));
-    int lixo = BinaryToInteger(GetNBits(b[0],1,3));
-    char * tamanho_1 = GetNBits(b[0],0,5);
-    char * tamanho_2 = GetNBits(b[1],1,8);
-    printf("tamanho 1: %s e tamanho 2 %s\n",tamanho_1,tamanho_2);
-    printf("Lixo %d",lixo)  ;
+    byte * b = (ReadFile(file,2));  // Array de 2 bytes.
+    char * bits_lixo = GetNBits(b[0],FRENTE,8);
+    printf("Lixo: %s\n",bits_lixo);
+    int lixo = BinaryToInteger(bits_lixo);
+    printf("Lixo %d\n",lixo)  ;
+    char * tamanho_1_tree = GetNBits(b[0],TRAS,5); // Array de zeros e 1s
+    char * tamanho_2_tree = GetNBits(b[1],FRENTE,8); // Array de zeros e 1s
+    char * tamanho_tree = ConcatString(tamanho_1_tree,tamanho_2_tree, 13);
+    printf("Tamanho tree %s\n", tamanho_tree);
+    int sizeTree = BinaryToInteger(tamanho_tree);
+    printf("Tamanho tree %d\n", sizeTree);
+
+    // Leitura de Preorder.
+    int i;
+ //   byte vazio = (byte) 0;
+    byte * preorder = ReadFile(file, sizeTree);
+
+    //Huff * MakeTreeFromPreOrder(unsigned char * array, int size);
+    Huff * tree = NULL;
+    byte in;
+    while (fread(&atual, 1, 1, file) >= 1)
+    {
+
+
+
+
+    }
     fclose(file);
 
     // Ler Cabecalho.
@@ -148,6 +175,6 @@ void Decompress()
 int main()
 {
     //Compress();
-    //Decompress();
+    Decompress();
     return 0;
 }
