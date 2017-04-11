@@ -18,7 +18,6 @@ byte * ReadFile(FILE * file, int numBytes)
     return  array;
 }
 
-
 unsigned char * GetNBits(byte b,  int frente, int n){ // Sempre joga para os n primeiros
     unsigned char * array = (unsigned char *) malloc(sizeof(unsigned char)*(n+1));
     if (frente){
