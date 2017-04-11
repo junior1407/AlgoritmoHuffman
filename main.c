@@ -120,53 +120,52 @@ int TotalFrequency(unsigned int * frequencias) {
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias) {
 
     byte file_char;
-    byte previous_char = '\0';
+
     unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*65);
     string_file[64] = '\0';
     int string_file_position = 0;
+
     int total_frequency = TotalFrequency(frequencias);
+
     ElementoTabela * binary_route;
     unsigned char * converted_binary;
+    int current_route_size;
+
+    int max_route = MaxRoute(tabela_conversao);
+    unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
+    int bits_to_add_position = 0;
+
     int i;
 
     while(fread(&file_char, 1, 1, initial_file) >= 1) {
         total_frequency--;
         printf("caractere lido: %c | ", file_char);
 
-        if(previous_char == '\0') {
-            previous_char = file_char;
-            binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
-            converted_binary = GetConvertedBits(binary_route);
-        } else {
-            if(previous_char != file_char) {
-                binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
-                converted_binary = GetConvertedBits(binary_route);
-            }
+        binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
+        converted_binary = GetConvertedBits(binary_route);
+        current_route_size = GetElementoTabelaSize(binary_route);
+
+        for(i = 0; current_route_size; ++i, current_route_size--) {
+            bits_to_add[i] = converted_binary[i];
         }
 
-        printf("converted binary: ");
-        for(i = 0; converted_binary[i] != '\0';++i) {
-            if(converted_binary[i] == '\0') {
-                printf("\\0 ");
+        while(converted_binary[bits_to_add_position] != '\0') {
+            if(string_file_position == 64) {
+                string_file_position = 0;
+                PrintBinaryToCharacter(string_file, final_file);
             }
-            printf("%c ", converted_binary[i]);
-        }
-        printf("\n");
 
-        for (i = 0; converted_binary[i] != '\0'; ++i) {
-            printf("FOR I: %d\n", i);
-            string_file[string_file_position] = converted_binary[i];
+            string_file[string_file_position] = bits_to_add[bits_to_add_position];
+            bits_to_add_position++;
             string_file_position++;
         }
+        bits_to_add_position = 0;
+
         if(!total_frequency) {
-            printf("IF 1\n");
-            string_file[string_file_position] = '\0';
-            PrintBinaryToCharacter(string_file, final_file);
-            string_file_position = 0;
-        } else if(string_file_position == 64) {
-            printf("IF 2\n");
-            string_file_position = 0;
-            PrintBinaryToCharacter(string_file, final_file);
+            if(string_file_position != 0) {
+                string_file[string_file_position] = '\0';
+                PrintBinaryToCharacter(string_file, final_file);
+            }
         }
     }
 }

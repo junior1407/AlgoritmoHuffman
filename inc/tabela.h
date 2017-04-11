@@ -43,6 +43,16 @@ void PrintLinha(Linha * linha);
 //It receives an ElementoTabela *, 'requested_route', and returns a string with the respective binary route (Linha->char).
 unsigned char * GetConvertedBits(ElementoTabela * requested_route);
 
+
+
+
+
+int MaxRoute(Tabela * tabela_conversao);
+
+
+
+
+
 //Gets and Sets for the Struct "Linha".
 unsigned char GetLinhaI(Linha * l);
 void SetLinhaI(Linha * l, unsigned char i);

@@ -122,6 +122,18 @@ unsigned char * GetConvertedBits(ElementoTabela * requested_route) {
     return bits;
 }
 
+int MaxRoute(Tabela * tabela_conversao) {
+
+    int max = 0;
+    int i;
+    for(i = 0; i < 256; ++i) {
+        if(tabela_conversao->elems[i]->size > max) {
+               max = tabela_conversao->elems[i]->size;
+        }
+    }
+    return max;
+}
+
 unsigned char GetLinhaI(Linha * l) {
     return l->i;
 }
