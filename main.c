@@ -87,10 +87,8 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
 
 int Compress(){
 
-    FILE  * file = fopen("C:\\Users\\HP\\Desktop\\Trabson\\AlgoritmoHuffman\\comp_files\\teste.txt","rb");
-    //FILE * new_file = fopen("C:\\Users\\HP\\Desktop\\Trabson\\AlgoritmoHuffman\\comp_files\\new_file.txt", "wb");
-    unsigned char new_file[500] = "";
-    unsigned char has[500] = "";
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    FILE * new_file = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.txt", "wb");
 
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
@@ -99,13 +97,6 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
-  
-    PrintPreOrder(GetHuffHead(tree), new_file);
-    printf("%s", new_file);
-    printf("\n");
-    Huff * huff = MakeTreeFromPreOrder(new_file, 5);
-    PrintPreOrder(GetHuffHead(huff), has);
-    printf("%s", has);
 
 
     //PrintHeader(frequencias, tree, tabelaConversao, new_file);

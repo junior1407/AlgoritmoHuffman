@@ -33,7 +33,7 @@ void AddNode(Huff * huff, Node * newNode);
 void AddNodeInterno(Huff * huff, Node * newNode);
 
 //Prints the given Huffman's Tree in Preorder transversal in the file 'new_file'.
-void PrintPreOrder(Node * head, unsigned char * new_file);
+void PrintPreOrder(Node * head, FILE * new_file);
 
 //Given an "*" or "\" node, this method check if it's a leaf or not. Returns the result.
 int IsLeaf(Node * check);
