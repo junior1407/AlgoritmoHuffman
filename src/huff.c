@@ -20,6 +20,31 @@ Huff * NewHuff() {
 	return newHuff;
 }
 
+int IsLeaf(Node * check) {
+    	if((check->left == NULL) && (check->right == NULL)) {
+            return 1;
+        }
+	return 0;
+}
+
+
+Node * NavigateTree(Node * atual, int direcao)
+{
+    if (direcao == 0)
+    {
+        return atual->left;
+    }
+    else
+    {
+        return  atual->right;
+    }
+
+
+
+}
+
+
+
 Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
@@ -150,11 +175,11 @@ void AddNode(Huff * huff, Node * newNode) {
 void PrintPreOrder(Node * head, unsigned char * new_file) {
 	if(head != NULL) {
 		if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
-			sprintf(new_file, strcat(new_file, "\\%c"), head->c);
+			fprintf(new_file, "\\%c", head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		} else {
-			sprintf(new_file, strcat(new_file, "%c"), head->c);
+			fprintf(new_file, "%c", head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		}
@@ -170,7 +195,6 @@ int IsLeaf(Node * check) {
 }
 
 int HowManyNodes(Node * node) {
-
     if(node != NULL) {
     	if(((node->c == '*') || (node->c == '\\')) && IsLeaf(node)) {
     		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));
