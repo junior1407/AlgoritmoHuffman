@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "inc/tabela.h"
 #include "inc/huff.h"
 #include "inc/binary.h"
 #define FRENTE 1
 #define TRAS 0
+#define BUFFER_SIZE 2
 typedef unsigned char byte;
-
 
 byte * ReadFile(FILE * file, int numBytes)
 {
@@ -83,8 +84,10 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
 
 
 int Compress(){
-    FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","r");
-    FILE * new_file = fopen("C:\\Git\\AlgoritmoHuffman\\comp_files\\new_file", "w");
+
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    FILE * new_file = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.txt", "wb");
+
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
@@ -93,43 +96,16 @@ int Compress(){
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
 
-
-
-   /* FILE * novo = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.huff","w+b");
-    unsigned char in;
-    unsigned char out='\0';
-    //int lixo;
-    Linha * atual;
-    int estado_bit=7;
-    while (fread(&in, 1, 1, file) >= 1)
-    {
-        ElementoTabela * codificacao = GetTabelaElement(tabelaConversao, in);
-        while (GetElementoTabelaSize(codificacao)>=1)
-        {
-            atual = PopFrontElementoTabela(codificacao);
-            set_bit(out, estado_bit);
-            estado_bit--;\
-            if (estado_bit==-1)
-            {
-             //   fwrite(out,1,1,novo);
-
-            }
-            //Condição recriar bit.
-
-        }
-
-    }
-
-*/
-
-
-
-
-    PrintHeader(frequencias, tree, tabelaConversao, new_file);
+    //PrintHeader(frequencias, tree, tabelaConversao, new_file);
     //Impressão dos Dados:
     // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
     fclose(file);
     return 0;
+}
+
+int teste()
+{
+    return 1;
 }
 void Decompress()
 {
@@ -155,11 +131,59 @@ void Decompress()
     //Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
     Huff * tree = NULL;
     byte in; // Byte com seus bits zero.
+
     byte out = (byte)0;
     byte curr; // Byte A ser Impresso.
     int estado_bit= 7;
     Node * atual = GetHuffHead(tree);
-    while (fread(&in, 1, 1, file) >= 1)
+   // while (fread(&in, 1, 1, file) >= 1)
+    int estado_bit= 7;
+    int x=0;
+    rewind(file);
+   // Node * atual = GetHuffHead(tree);
+    printf("oi\n");
+    unsigned char  buffer [BUFFER_SIZE];
+    int tamBuffer=-1;
+    byte out = (byte)0;
+    while (( tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >=1)
+    {
+            printf("Uma leitura %d \n",tamBuffer);
+            for (i=0; i< tamBuffer; i++)
+            {
+                 if ((tamBuffer!=BUFFER_SIZE) && ((i+1) == tamBuffer))
+                 {
+                   //Estou no last byte.
+                     int j;
+                     for (j=7; j>=lixo; j--)
+                     {
+
+                     }
+                 }
+                else{
+
+                  /*   do {
+                         if (IsLeaf(atual))
+                         {
+                             out = GetNodeC(atual);
+                             atual= GetHuffHead(tree);
+                             fwrite(&out , 1 , sizeof(unsigned char) , saida );
+
+                         }
+                         atual = NavigateTree(atual, is_bit_i_set(buffer[i], estado_bit) == 0 ? 0 : 1);
+                         estado_bit--;
+                     }while(estado_bit!=-1);
+                     estado_bit=7;*/
+                 }
+
+
+
+            }
+
+
+    }
+/*
+    while (fread(&in, 1, 1, file) == 1)
+
     {
         if (estado_bit==-1)
         {
@@ -176,7 +200,9 @@ void Decompress()
             estado_bit--;
         }
         while(estado_bit>=0);
-    }
+
+    }*/
+
     fclose(file);
 
     // Ler Cabecalho.
@@ -188,9 +214,11 @@ void Decompress()
 
 }
 
+
 int main()
 {
-    //Compress();
-    Decompress();
+    Compress();
+    //Decompress();
+
     return 0;
 }

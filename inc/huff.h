@@ -17,11 +17,13 @@ Huff * NewHuff();
 // Given the frequency list of Bytes, this method Generates the Huffman Tree. Returns the New Tree.
 Huff * MakeTree(unsigned int * frequencias);
 
+// Given the PreOrderTree, It generates the HuffMan's Tree. Returns the Tree.
+Huff * MakeTreeFromPreOrder(unsigned char * array, int size);
+Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, Node * node);
 
-int IsLeaf(Node * check);
 //Given the Node's Atribbutes, It generates a new HuffMan's Tree Node. Returns the New Node.
 Node * NewNode(unsigned char c, int freq);
-
+Node * NewEmptyNode();
 //Pops the first node of a Huffman's tree. Returns the deleted Node.
 Node * PopNode(Huff * huff);
 
@@ -29,9 +31,12 @@ Node * PopNode(Huff * huff);
 void AddNode(Huff * huff, Node * newNode);
 
 void AddNodeInterno(Huff * huff, Node * newNode);
+
 //Prints the given Huffman's Tree in Preorder transversal in the file 'new_file'.
 void PrintPreOrder(Node * head, FILE * new_file);
 
+//Given an "*" or "\" node, this method check if it's a leaf or not. Returns the result.
+int IsLeaf(Node * check);
 /*
  *Creates a Conversion table to speed up the process of encoding.
  *Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empy Elemento Tabela representing the navigation of the tree.
