@@ -175,10 +175,12 @@ void AddNode(Huff * huff, Node * newNode) {
 void PrintPreOrder(Node * head, FILE * new_file) {
 	if(head != NULL) {
 		if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
-			fprintf(new_file, "\\%c", head->c);
+		//	printf("\\%c", head->c);
+            fprintf(new_file, "\\%c", head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		} else {
+          //  printf("%c", head->c);
 			fprintf(new_file, "%c", head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);

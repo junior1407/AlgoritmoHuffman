@@ -7,7 +7,7 @@
 #include "inc/binary.h"
 #define FRENTE 1
 #define TRAS 0
-#define BUFFER_SIZE 2
+#define BUFFER_SIZE 500
 typedef unsigned char byte;
 
 byte * ReadFile(FILE * file, int numBytes)
@@ -138,10 +138,8 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
 }
 
 int Compress(){
-
-
-    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
-    FILE * new_file = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.txt", "wb");9
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\entrada.mp3","rb");
+    FILE * new_file = fopen("C:\\Users\\Valdir Jr\\Desktop\\compac.huff", "wb");
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
@@ -149,7 +147,6 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
-
     PrintHeader(frequencias, tree, tabelaConversao, new_file);
     Convert(file, new_file, tabelaConversao, frequencias);
     fclose(file);
@@ -158,114 +155,71 @@ int Compress(){
 }
 void Decompress()
 {
-    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
-    FILE * saida = fopen("C:\\Users\\Valdir Jr\\Desktop\\out.txt","wb");
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\compac.huff","rb");
+    FILE * saida = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.mp3","wb");
     byte * b = (ReadFile(file,2));  // Array de 2 bytes.
-    char * bits_lixo = GetNBits(b[0],FRENTE,8);
-    printf("Lixo: %s\n",bits_lixo);
+    unsigned char * bits_lixo = GetNBits(b[0],FRENTE,3);
     int lixo = BinaryToInteger(bits_lixo);
-    printf("Lixo %d\n",lixo)  ;
-    char * tamanho_1_tree = GetNBits(b[0],TRAS,5); // Array de zeros e 1s
-    char * tamanho_2_tree = GetNBits(b[1],FRENTE,8); // Array de zeros e 1s
-    char * tamanho_tree = ConcatString(tamanho_1_tree,tamanho_2_tree, 13);
-    printf("Tamanho tree %s\n", tamanho_tree);
+    unsigned char * tamanho_1_tree = GetNBits(b[0],TRAS,5); // Array de zeros e 1s
+    unsigned char * tamanho_2_tree = GetNBits(b[1],FRENTE,8); // Array de zeros e 1s
+    unsigned char * tamanho_tree = ConcatString(tamanho_1_tree,tamanho_2_tree, 13);
     int sizeTree = BinaryToInteger(tamanho_tree);
-    printf("Tamanho tree %d\n", sizeTree);
-
-    // Leitura de Preorder.
     int i;
- //   byte vazio = (byte) 0;
     byte * preorder = ReadFile(file, sizeTree);
-
-    //Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
-    Huff * tree = NULL;
-    byte in; // Byte com seus bits zero.
-
+    Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
+    PrintPreOrder(GetHuffHead(tree),NULL);
     byte out = (byte)0;
-    byte curr; // Byte A ser Impresso.
     int estado_bit= 7;
     Node * atual = GetHuffHead(tree);
-   // while (fread(&in, 1, 1, file) >= 1)
-    int x=0;
-    rewind(file);
-   // Node * atual = GetHuffHead(tree);
-    printf("oi\n");
     unsigned char  buffer [BUFFER_SIZE];
     int tamBuffer=-1;
     while (( tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >=1)
     {
-            printf("Uma leitura %d \n",tamBuffer);
             for (i=0; i< tamBuffer; i++)
             {
-                 if ((tamBuffer!=BUFFER_SIZE) && ((i+1) == tamBuffer))
-                 {
-                   //Estou no last byte.
-                     int j;
-                     for (j=7; j>=lixo; j--)
-                     {
-
-                     }
+                int limiterepet = 0;
+                 if ((tamBuffer!=BUFFER_SIZE) && ((i+1) == tamBuffer)) {
+                       limiterepet = lixo;
                  }
-                else{
-
-                  /*   do {
+                     int j;
+                     for (j=7; j>=limiterepet; j--)
+                     {
+                         atual = NavigateTree(atual, is_bit_i_set(buffer[i], j) == 0 ? 0 : 1);
                          if (IsLeaf(atual))
                          {
                              out = GetNodeC(atual);
                              atual= GetHuffHead(tree);
                              fwrite(&out , 1 , sizeof(unsigned char) , saida );
-
                          }
-                         atual = NavigateTree(atual, is_bit_i_set(buffer[i], estado_bit) == 0 ? 0 : 1);
-                         estado_bit--;
-                     }while(estado_bit!=-1);
-                     estado_bit=7;*/
+                     }
                  }
-
-
-
-            }
+                 }
+    fclose(file);
+    fclose(saida);
 
 
     }
-/*
-    while (fread(&in, 1, 1, file) == 1)
 
+void Ler()
+{
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.txt","rb");
+    byte atual;
+    while (fread(&atual, 1, 1, file) >= 1)
     {
-        if (estado_bit==-1)
-        {
-            estado_bit=7;
-        }
-        do {
-            if (IsLeaf(atual))
-            {
-                curr = GetNodeC(atual);
-                fwrite(&curr , 1 , sizeof(unsigned char) , saida );
-                atual = GetHuffHead(tree);
-            }
-            atual = NavigateTree(atual, is_bit_i_set(in, estado_bit) == 0 ? 0 : 1);
-            estado_bit--;
-        }
-        while(estado_bit>=0);
-
-    }*/
+        printf("-%d-",(int)atual);
+    }
 
     fclose(file);
-
-    // Ler Cabecalho.
-    // MakeTree a partir da Preorder.
-    //
-    //
-    //
-    //
 
 }
 
 
 int main()
 {
-    Compress();
-    //Decompress();
+    //Compress();
+   // Ler();
+
+  Decompress();
 
     return 0;
 }
