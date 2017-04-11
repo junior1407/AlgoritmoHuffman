@@ -29,18 +29,18 @@ int BinaryToInteger(unsigned char* binary_number);
  * It receives as parameter an unsigned int *, 'frequencias', and an Tabela *, 'tabela_conversao';
  * Calculate and return in a string the amount of trash in binary number;
  */
-char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao);
+unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao);
 
 /*
  * It receives as parameter an Huff *, 'tree'.
  * Calculate and return in a string the tree's size in binary number;
  */
-char * TreeSizeBinary(Huff * tree);
+unsigned char * TreeSizeBinary(Huff * tree);
 
 /*
- * It receives as parameters an string(char *), 'string',of a binary number, and a FILE * 'new_file';
- * Convert in bytes and print in the 'new_file' the corresponding characters.
+ * It receives as parameters an string(char *), 'string',of a binary number, and a FILE * 'new_file.txt';
+ * Convert in bytes and print in the 'new_file.txt' the corresponding characters.
  */
-void PrintBinaryToCharacter(char * string, FILE * new_file);
+void PrintBinaryToCharacter(unsigned char * string, FILE * new_file);
 
 #endif

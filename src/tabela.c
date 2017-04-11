@@ -4,7 +4,7 @@
 #include "../inc/tabela.h"
 
 struct Linha{
-    char i;
+    unsigned char i;
     struct Linha * next;
 };
 
@@ -18,7 +18,7 @@ struct Tabela {
     struct ElementoTabela **elems; // Array de 256 Posições.
 };
 
-Linha * CreateLinha(char i) {
+Linha * CreateLinha(unsigned char i) {
     Linha * novo = (Linha*) malloc(sizeof(Linha));
     novo->i=i;
     novo->next=NULL;
@@ -51,7 +51,7 @@ Tabela * CreateTabela() {
     return novo;
 }
 
-void Enqueue(ElementoTabela *tabela, char i) {
+void Enqueue(ElementoTabela *tabela, unsigned char i) {
     Linha * novo = CreateLinha(i);
     if (tabela->size==0)
     {
@@ -76,7 +76,7 @@ ElementoTabela * CreateElementCopy(Linha * head) {
     return nova;
 }
 
-char Dequeue(ElementoTabela * elem) {
+unsigned char Dequeue(ElementoTabela * elem) {
     if (elem->size !=0)
     {
         if (elem->size == 1)
@@ -90,7 +90,7 @@ char Dequeue(ElementoTabela * elem) {
         else
         {
             Linha * aux = elem->front;
-            char c = elem->rear->i;
+            unsigned char c = elem->rear->i;
             while(aux->next != elem->rear)
             {
                 aux= aux->next;
@@ -106,27 +106,39 @@ char Dequeue(ElementoTabela * elem) {
     }
 }
 
-char * GetConvertedBits(ElementoTabela * requested_route) {
+unsigned char * GetConvertedBits(ElementoTabela * requested_route) {
 
     int route_size = requested_route->size;
     int position = 0;
-    char* bits = (char*)malloc(sizeof(char)*(route_size+1));
+    unsigned char* bits = (unsigned char*)malloc(sizeof(unsigned char)*(route_size+1));
     Linha * current_bit = requested_route->front;
+    bits[route_size] = '\0';
     while(route_size > 0) {
         bits[position] = current_bit->i;
         current_bit = current_bit->next;
         position++;
         route_size--;
     }
-    bits[route_size] = '\0';
     return bits;
 }
 
-char GetLinhaI(Linha * l) {
+int MaxRoute(Tabela * tabela_conversao) {
+
+    int max = 0;
+    int i;
+    for(i = 0; i < 256; ++i) {
+        if(tabela_conversao->elems[i]->size > max) {
+               max = tabela_conversao->elems[i]->size;
+        }
+    }
+    return max;
+}
+
+unsigned char GetLinhaI(Linha * l) {
     return l->i;
 }
 
-void SetLinhaI(Linha * l, char i) {
+void SetLinhaI(Linha * l, unsigned char i) {
     l->i = i;
 }
 
@@ -173,7 +185,7 @@ ElementoTabela ** GetTabelaElements(Tabela * tabela) {
 
 Linha * PopFrontElementoTabela(ElementoTabela * elem)
 {
-    int size;
+    int size = elem->size;
     struct Linha * front;
     struct Linha * rear;
     Linha * aux = elem->front;
@@ -189,7 +201,6 @@ Linha * PopFrontElementoTabela(ElementoTabela * elem)
     return  aux;
 
 }
-
 
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos) {
     tabela->elems[pos] = elemento;

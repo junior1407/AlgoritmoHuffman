@@ -23,14 +23,14 @@ Tabela * CreateTabela();
 //Creates an empty "ElementoTabela".
 ElementoTabela * CreateElementoTabela();
 
-// Creates a "Linha" given an char containing '0' or '1'.
-Linha * CreateLinha(char i);
+// Creates a "Linha" given an unsigned char containing '0' or '1'.
+Linha * CreateLinha(unsigned char i);
 
 // Adds a '0' or '1' to a given "ElementoTabela" representing the enconding of a byte.
-void Enqueue(ElementoTabela * elem, char i);
+void Enqueue(ElementoTabela * elem, unsigned char i);
 
 // Removes the last bit of a given enconding. Returns the deleted bit.
-char Dequeue(ElementoTabela * elem);
+unsigned char Dequeue(ElementoTabela * elem);
 
 // Creates a copy of a given enconding to a new "ElementoTabela".
 ElementoTabela * CreateElementCopy(Linha * head);
@@ -41,11 +41,21 @@ Linha * PopFrontElementoTabela(ElementoTabela * elem);
 void PrintLinha(Linha * linha);
 
 //It receives an ElementoTabela *, 'requested_route', and returns a string with the respective binary route (Linha->char).
-char * GetConvertedBits(ElementoTabela * requested_route);
+unsigned char * GetConvertedBits(ElementoTabela * requested_route);
+
+
+
+
+
+int MaxRoute(Tabela * tabela_conversao);
+
+
+
+
 
 //Gets and Sets for the Struct "Linha".
-char GetLinhaI(Linha * l);
-void SetLinhaI(Linha * l, char i);
+unsigned char GetLinhaI(Linha * l);
+void SetLinhaI(Linha * l, unsigned char i);
 Linha * GetLinhaNext(Linha * l);
 void SetLinhaNext(Linha * l, Linha * next);
 
