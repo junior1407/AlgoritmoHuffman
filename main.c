@@ -137,14 +137,12 @@ void Decompress()
     int estado_bit= 7;
     Node * atual = GetHuffHead(tree);
    // while (fread(&in, 1, 1, file) >= 1)
-    int estado_bit= 7;
     int x=0;
     rewind(file);
    // Node * atual = GetHuffHead(tree);
     printf("oi\n");
     unsigned char  buffer [BUFFER_SIZE];
     int tamBuffer=-1;
-    byte out = (byte)0;
     while (( tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >=1)
     {
             printf("Uma leitura %d \n",tamBuffer);
