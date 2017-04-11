@@ -38,8 +38,8 @@ unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversa
 unsigned char * TreeSizeBinary(Huff * tree);
 
 /*
- * It receives as parameters an string(char *), 'string',of a binary number, and a FILE * 'new_file';
- * Convert in bytes and print in the 'new_file' the corresponding characters.
+ * It receives as parameters an string(char *), 'string',of a binary number, and a FILE * 'new_file.txt';
+ * Convert in bytes and print in the 'new_file.txt' the corresponding characters.
  */
 void PrintBinaryToCharacter(unsigned char * string, FILE * new_file);
 

@@ -43,7 +43,7 @@ unsigned char * IntegerToBinary(int integer, int string_size) {
             binary_number[i] = '0';
         }
     }
-   // binary_number[string_size] = '\0';
+    binary_number[string_size] = '\0';
     return binary_number;
 }
 
@@ -88,6 +88,7 @@ void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
     unsigned char* str_8bits = (unsigned char*)malloc(sizeof(unsigned char)*9);
     str_8bits[8] = '\0';
     int string_size = strlen((char*)string);
+    printf("%d", string_size);
     int rest_flag = (string_size - (string_size%8));
     int bit_position = 0, str_position = 0;
     while(str_position < rest_flag) {
@@ -96,7 +97,7 @@ void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
         str_position++;
         if(bit_position == 8) {
             bit_position = 0;
-            fprintf(new_file, "%c", BinaryToInteger(str_8bits));
+            fprintf(new_file, "%c", (unsigned char)BinaryToInteger(str_8bits));
         }
     }
     if(string_size - rest_flag) {
@@ -111,6 +112,6 @@ void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
                 str_8bits[i] = '0';
             }
         }
-        fprintf(new_file, "%c", BinaryToInteger(str_8bits));
+        fprintf(new_file, "%c", (unsigned char)BinaryToInteger(str_8bits));
     }
 }

@@ -112,13 +112,13 @@ unsigned char * GetConvertedBits(ElementoTabela * requested_route) {
     int position = 0;
     unsigned char* bits = (unsigned char*)malloc(sizeof(unsigned char)*(route_size+1));
     Linha * current_bit = requested_route->front;
+    bits[route_size] = '\0';
     while(route_size > 0) {
         bits[position] = current_bit->i;
         current_bit = current_bit->next;
         position++;
         route_size--;
     }
-    bits[route_size] = '\0';
     return bits;
 }
 
@@ -189,7 +189,6 @@ Linha * PopFrontElementoTabela(ElementoTabela * elem)
     return  aux;
 
 }
-
 
 void SetTabelaElemento(Tabela * tabela, ElementoTabela* elemento, int pos) {
     tabela->elems[pos] = elemento;

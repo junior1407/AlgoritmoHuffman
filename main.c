@@ -76,10 +76,10 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
     PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
-int Trash(unsigned int * frequencias, Tabela * tabela_conversao) {
+int Rest(unsigned int * frequencias, Tabela * tabela_conversao) {
 
     int total_bits = 0;
-    int bits, trash;
+    int bits, rest;
     int i;
     for(i = 0; i < 256; ++i) {
         if(frequencias[i] > 0) {
@@ -87,28 +87,87 @@ int Trash(unsigned int * frequencias, Tabela * tabela_conversao) {
             total_bits += (frequencias[i] * bits);
         }
     }
-    trash = (8-(total_bits%8));
-    return trash;
+    rest = (total_bits%8);
+    return rest;
+}
+
+int TotalBits(unsigned int * frequencias, Tabela * tabela_conversao) {
+
+    int total_bits = 0;
+    int bits;
+    int i;
+    for(i = 0; i < 256; ++i) {
+        if(frequencias[i] > 0) {
+            bits = GetElementoTabelaSize(GetTabelaElement(tabela_conversao, i));
+            total_bits += (frequencias[i] * bits);
+        }
+    }
+    return total_bits;
+}
+
+int TotalFrequency(unsigned int * frequencias) {
+
+    int i;
+    int total_frenquency = 0;
+    for(i = 0; i < 256; ++i) {
+        if(frequencias[i] > 0) {
+            total_frenquency += frequencias[i];
+        }
+    }
+    return total_frenquency;
 }
 
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias) {
 
-    byte current_byte;
-    unsigned char* current_byte_binary = (unsigned char*)malloc(sizeof(unsigned char)*9);
-    unsigned char* string_test;
-    PrintBinaryToCharacter(string_test,final_file);
-    int total_frequency = 0;
+    byte file_char;
+    byte previous_char = '\0';
+    unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*65);
+    string_file[64] = '\0';
+    int string_file_position = 0;
+    int total_frequency = TotalFrequency(frequencias);
+    ElementoTabela * binary_route;
+    unsigned char * converted_binary;
     int i;
-    int trash = Trash(frequencias, tabela_conversao);
-    for(i = 0; i < 256; ++i) {
-        if(frequencias[i] > 0) {
-            total_frequency += frequencias[i];
-        }
-    }
-    while(fread(&current_byte, 1, 1, initial_file) >= 1)
-    {
-        current_byte_binary = IntegerToBinary((int)current_byte, 8);
 
+    while(fread(&file_char, 1, 1, initial_file) >= 1) {
+        total_frequency--;
+        printf("caractere lido: %c | ", file_char);
+
+        if(previous_char == '\0') {
+            previous_char = file_char;
+            binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
+            converted_binary = GetConvertedBits(binary_route);
+        } else {
+            if(previous_char != file_char) {
+                binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
+                converted_binary = GetConvertedBits(binary_route);
+            }
+        }
+
+        printf("converted binary: ");
+        for(i = 0; converted_binary[i] != '\0';++i) {
+            if(converted_binary[i] == '\0') {
+                printf("\\0 ");
+            }
+            printf("%c ", converted_binary[i]);
+        }
+        printf("\n");
+
+        for (i = 0; converted_binary[i] != '\0'; ++i) {
+            printf("FOR I: %d\n", i);
+            string_file[string_file_position] = converted_binary[i];
+            string_file_position++;
+        }
+        if(!total_frequency) {
+            printf("IF 1\n");
+            string_file[string_file_position] = '\0';
+            PrintBinaryToCharacter(string_file, final_file);
+            string_file_position = 0;
+        } else if(string_file_position == 64) {
+            printf("IF 2\n");
+            string_file_position = 0;
+            PrintBinaryToCharacter(string_file, final_file);
+        }
     }
 }
 
@@ -122,8 +181,8 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
-    PrintHeader(frequencias, tree, tabelaConversao, new_file);
-
+    //PrintHeader(frequencias, tree, tabelaConversao, new_file);
+    Convert(file, new_file, tabelaConversao, frequencias);
 
     //Impressão dos Dados:
     // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
