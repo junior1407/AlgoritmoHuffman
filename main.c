@@ -76,35 +76,6 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
     PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
-int Rest(unsigned int * frequencias, Tabela * tabela_conversao) {
-
-    int total_bits = 0;
-    int bits, rest;
-    int i;
-    for(i = 0; i < 256; ++i) {
-        if(frequencias[i] > 0) {
-            bits = GetElementoTabelaSize(GetTabelaElement(tabela_conversao, i));
-            total_bits += (frequencias[i] * bits);
-        }
-    }
-    rest = (total_bits%8);
-    return rest;
-}
-
-int TotalBits(unsigned int * frequencias, Tabela * tabela_conversao) {
-
-    int total_bits = 0;
-    int bits;
-    int i;
-    for(i = 0; i < 256; ++i) {
-        if(frequencias[i] > 0) {
-            bits = GetElementoTabelaSize(GetTabelaElement(tabela_conversao, i));
-            total_bits += (frequencias[i] * bits);
-        }
-    }
-    return total_bits;
-}
-
 int TotalFrequency(unsigned int * frequencias) {
 
     int i;
@@ -120,47 +91,39 @@ int TotalFrequency(unsigned int * frequencias) {
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias) {
 
     byte file_char;
-
     unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*65);
     string_file[64] = '\0';
     int string_file_position = 0;
-
     int total_frequency = TotalFrequency(frequencias);
-
     ElementoTabela * binary_route;
     unsigned char * converted_binary;
     int current_route_size;
-
     int max_route = MaxRoute(tabela_conversao);
     unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
     int bits_to_add_position = 0;
-
     int i;
-
     while(fread(&file_char, 1, 1, initial_file) >= 1) {
         total_frequency--;
-        printf("caractere lido: %c | ", file_char);
-
         binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
         converted_binary = GetConvertedBits(binary_route);
         current_route_size = GetElementoTabelaSize(binary_route);
-
         for(i = 0; current_route_size; ++i, current_route_size--) {
             bits_to_add[i] = converted_binary[i];
         }
-
         while(converted_binary[bits_to_add_position] != '\0') {
             if(string_file_position == 64) {
                 string_file_position = 0;
                 PrintBinaryToCharacter(string_file, final_file);
             }
-
             string_file[string_file_position] = bits_to_add[bits_to_add_position];
             bits_to_add_position++;
             string_file_position++;
         }
         bits_to_add_position = 0;
-
+        if(string_file_position == 64) {
+            string_file_position = 0;
+            PrintBinaryToCharacter(string_file, final_file);
+        }
         if(!total_frequency) {
             if(string_file_position != 0) {
                 string_file[string_file_position] = '\0';
@@ -180,11 +143,8 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
-    //PrintHeader(frequencias, tree, tabelaConversao, new_file);
+    PrintHeader(frequencias, tree, tabelaConversao, new_file);
     Convert(file, new_file, tabelaConversao, frequencias);
-
-    //Impressão dos Dados:
-    // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
     fclose(file);
     fclose(new_file);
     return 0;
