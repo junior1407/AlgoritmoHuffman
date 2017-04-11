@@ -20,6 +20,31 @@ Huff * NewHuff() {
 	return newHuff;
 }
 
+int IsLeaf(Node * check) {
+    	if((check->left == NULL) && (check->right == NULL)) {
+            return 1;
+        }
+	return 0;
+}
+
+
+Node * NavigateTree(Node * atual, int direcao)
+{
+    if (direcao == 0)
+    {
+        return atual->left;
+    }
+    else
+    {
+        return  atual->right;
+    }
+
+
+
+}
+
+
+
 Huff * MakeTree(unsigned int * frequencias) {
 	Huff * huff = NewHuff();
 	int i;
@@ -38,6 +63,44 @@ Huff * MakeTree(unsigned int * frequencias) {
 		AddNode(huff, soma);
 	}
 	return huff;
+}
+
+Huff * MakeTreeFromPreOrder(unsigned char * array, int size) {
+    int current = 0;
+    Node * node = NewEmptyNode();
+    Huff * huff = NewHuff();
+    huff->head = MakeTreeFromPreOrderUtil(array, size, &current, node);
+    return huff;
+}
+
+Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, Node * node) {
+    if(*current < size) {
+        if (array[*current] == '\\') {
+            node->c = array[++*(current)];
+            ++*(current);
+            node->left = node->right = NULL;
+
+            return node;
+        } else if (array[*current] != '*') {
+            node->c = array[*current];
+            ++*(current);
+            node->left = node->right = NULL;
+
+            return node;
+        } else {
+            node->c = array[*current];
+            ++*(current);
+            node->left = MakeTreeFromPreOrderUtil(array, size, current, NewEmptyNode());
+            node->right = MakeTreeFromPreOrderUtil(array, size, current, NewEmptyNode());
+            return node;
+        }
+    }
+    return NULL;
+}
+
+Node * NewEmptyNode() {
+    Node * newNode = (Node*) malloc(sizeof(Node));
+    return newNode;
 }
 
 Node * NewNode(unsigned char c, int freq) {
@@ -123,15 +186,7 @@ void PrintPreOrder(Node * head, FILE * new_file) {
 	}
 }
 
-int IsLeaf(Node * check) {
-	if((check->left == NULL) && (check->right == NULL)) {
-		return 1;
-	}
-	return 0;
-}
-
 int HowManyNodes(Node * node) {
-
     if(node != NULL) {
     	if(((node->c == '*') || (node->c == '\\')) && IsLeaf(node)) {
     		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));

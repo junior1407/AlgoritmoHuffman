@@ -1,9 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "inc/tabela.h"
 #include "inc/huff.h"
 #include "inc/binary.h"
+#define FRENTE 1
+#define TRAS 0
+#define BUFFER_SIZE 2
 typedef unsigned char byte;
 
 byte * ReadFile(FILE * file, int numBytes)
@@ -21,6 +25,7 @@ byte * ReadFile(FILE * file, int numBytes)
 unsigned char * GetNBits(byte b,  int frente, int n){ // Sempre joga para os n primeiros
     unsigned char * array = (unsigned char *) malloc(sizeof(unsigned char)*(n+1));
     if (frente){
+
         b = b>>(8-n);
         b= b<<(8-n);}
     else
@@ -133,8 +138,10 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
 }
 
 int Compress(){
-    FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","rb");
-    FILE * new_file = fopen("C:\\Git\\AlgoritmoHuffman\\comp_files\\new_file", "w");
+
+
+    FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
+    FILE * new_file = fopen("C:\\Users\\Valdir Jr\\Desktop\\saida.txt", "wb");9
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
@@ -142,6 +149,7 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
+
     PrintHeader(frequencias, tree, tabelaConversao, new_file);
     Convert(file, new_file, tabelaConversao, frequencias);
     fclose(file);
@@ -151,12 +159,97 @@ int Compress(){
 void Decompress()
 {
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
-    byte * b = (ReadFile(file,2));
-    int lixo = BinaryToInteger(GetNBits(b[0],1,3));
-    unsigned char * tamanho_1 = GetNBits(b[0],0,5);
-    unsigned char * tamanho_2 = GetNBits(b[1],1,8);
-    printf("tamanho 1: %s e tamanho 2 %s\n",tamanho_1,tamanho_2);
-    printf("Lixo %d",lixo)  ;
+    FILE * saida = fopen("C:\\Users\\Valdir Jr\\Desktop\\out.txt","wb");
+    byte * b = (ReadFile(file,2));  // Array de 2 bytes.
+    char * bits_lixo = GetNBits(b[0],FRENTE,8);
+    printf("Lixo: %s\n",bits_lixo);
+    int lixo = BinaryToInteger(bits_lixo);
+    printf("Lixo %d\n",lixo)  ;
+    char * tamanho_1_tree = GetNBits(b[0],TRAS,5); // Array de zeros e 1s
+    char * tamanho_2_tree = GetNBits(b[1],FRENTE,8); // Array de zeros e 1s
+    char * tamanho_tree = ConcatString(tamanho_1_tree,tamanho_2_tree, 13);
+    printf("Tamanho tree %s\n", tamanho_tree);
+    int sizeTree = BinaryToInteger(tamanho_tree);
+    printf("Tamanho tree %d\n", sizeTree);
+
+    // Leitura de Preorder.
+    int i;
+ //   byte vazio = (byte) 0;
+    byte * preorder = ReadFile(file, sizeTree);
+
+    //Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
+    Huff * tree = NULL;
+    byte in; // Byte com seus bits zero.
+
+    byte out = (byte)0;
+    byte curr; // Byte A ser Impresso.
+    int estado_bit= 7;
+    Node * atual = GetHuffHead(tree);
+   // while (fread(&in, 1, 1, file) >= 1)
+    int x=0;
+    rewind(file);
+   // Node * atual = GetHuffHead(tree);
+    printf("oi\n");
+    unsigned char  buffer [BUFFER_SIZE];
+    int tamBuffer=-1;
+    while (( tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >=1)
+    {
+            printf("Uma leitura %d \n",tamBuffer);
+            for (i=0; i< tamBuffer; i++)
+            {
+                 if ((tamBuffer!=BUFFER_SIZE) && ((i+1) == tamBuffer))
+                 {
+                   //Estou no last byte.
+                     int j;
+                     for (j=7; j>=lixo; j--)
+                     {
+
+                     }
+                 }
+                else{
+
+                  /*   do {
+                         if (IsLeaf(atual))
+                         {
+                             out = GetNodeC(atual);
+                             atual= GetHuffHead(tree);
+                             fwrite(&out , 1 , sizeof(unsigned char) , saida );
+
+                         }
+                         atual = NavigateTree(atual, is_bit_i_set(buffer[i], estado_bit) == 0 ? 0 : 1);
+                         estado_bit--;
+                     }while(estado_bit!=-1);
+                     estado_bit=7;*/
+                 }
+
+
+
+            }
+
+
+    }
+/*
+    while (fread(&in, 1, 1, file) == 1)
+
+    {
+        if (estado_bit==-1)
+        {
+            estado_bit=7;
+        }
+        do {
+            if (IsLeaf(atual))
+            {
+                curr = GetNodeC(atual);
+                fwrite(&curr , 1 , sizeof(unsigned char) , saida );
+                atual = GetHuffHead(tree);
+            }
+            atual = NavigateTree(atual, is_bit_i_set(in, estado_bit) == 0 ? 0 : 1);
+            estado_bit--;
+        }
+        while(estado_bit>=0);
+
+    }*/
+
     fclose(file);
 
     // Ler Cabecalho.
@@ -168,9 +261,11 @@ void Decompress()
 
 }
 
+
 int main()
 {
     Compress();
     //Decompress();
+
     return 0;
 }
