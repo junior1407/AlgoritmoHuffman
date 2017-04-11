@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "inc/tabela.h"
 #include "inc/huff.h"
@@ -85,8 +86,12 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
 
 
 int Compress(){
-    FILE  * file = fopen("C:\\Users\\Pedro\\Desktop\\teste.txt","rb");
-    FILE * new_file = fopen("C:\\Git\\AlgoritmoHuffman\\comp_files\\new_file", "wb");
+
+    FILE  * file = fopen("C:\\Users\\HP\\Desktop\\Trabson\\AlgoritmoHuffman\\comp_files\\teste.txt","rb");
+    //FILE * new_file = fopen("C:\\Users\\HP\\Desktop\\Trabson\\AlgoritmoHuffman\\comp_files\\new_file.txt", "wb");
+    unsigned char new_file[500] = "";
+    unsigned char has[500] = "";
+
     int unsigned frequencias[256]={0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
@@ -94,8 +99,16 @@ int Compress(){
     ElementoTabela * percurso = CreateElementoTabela();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao,&percurso);
     rewind(file);
+  
+    PrintPreOrder(GetHuffHead(tree), new_file);
+    printf("%s", new_file);
+    printf("\n");
+    Huff * huff = MakeTreeFromPreOrder(new_file, 5);
+    PrintPreOrder(GetHuffHead(huff), has);
+    printf("%s", has);
 
-    PrintHeader(frequencias, tree, tabelaConversao, new_file);
+
+    //PrintHeader(frequencias, tree, tabelaConversao, new_file);
     //Impressão dos Dados:
     // Fazer Conversando segundo tabela, e imprimindo diretamente no arquivo
     fclose(file);
@@ -209,7 +222,8 @@ void Decompress()
 
 int main()
 {
-    //Compress();
-    Decompress();
+    Compress();
+    //Decompress();
+
     return 0;
 }
