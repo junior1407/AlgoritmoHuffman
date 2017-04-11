@@ -40,6 +40,44 @@ Huff * MakeTree(unsigned int * frequencias) {
 	return huff;
 }
 
+Huff * MakeTreeFromPreOrder(unsigned char * array, int size) {
+    int current = 0;
+    Node * node = NewEmptyNode();
+    Huff * huff = NewHuff();
+    huff->head = MakeTreeFromPreOrderUtil(array, size, &current, node);
+    return huff;
+}
+
+Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, Node * node) {
+    if(*current < size) {
+        if (array[*current] == '\\') {
+            node->c = array[++*(current)];
+            ++*(current);
+            node->left = node->right = NULL;
+
+            return node;
+        } else if (array[*current] != '*') {
+            node->c = array[*current];
+            ++*(current);
+            node->left = node->right = NULL;
+
+            return node;
+        } else {
+            node->c = array[*current];
+            ++*(current);
+            node->left = MakeTreeFromPreOrderUtil(array, size, current, NewEmptyNode());
+            node->right = MakeTreeFromPreOrderUtil(array, size, current, NewEmptyNode());
+            return node;
+        }
+    }
+    return NULL;
+}
+
+Node * NewEmptyNode() {
+    Node * newNode = (Node*) malloc(sizeof(Node));
+    return newNode;
+}
+
 Node * NewNode(unsigned char c, int freq) {
     Node * newNode = (Node*) malloc(sizeof(Node));
     newNode->c = c;
@@ -109,14 +147,14 @@ void AddNode(Huff * huff, Node * newNode) {
     }
 }
 
-void PrintPreOrder(Node * head, FILE * new_file) {
+void PrintPreOrder(Node * head, unsigned char * new_file) {
 	if(head != NULL) {
 		if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
-			fprintf(new_file, "\\%c", head->c);
+			sprintf(new_file, strcat(new_file, "\\%c"), head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		} else {
-			fprintf(new_file, "%c", head->c);
+			sprintf(new_file, strcat(new_file, "%c"), head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		}
@@ -127,13 +165,14 @@ int IsLeaf(Node * check) {
 	if((check->left == NULL) && (check->right == NULL)) {
 		return 1;
 	}
+
 	return 0;
 }
 
 int HowManyNodes(Node * node) {
 
     if(node != NULL) {
-    	if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
+    	if(((node->c == '*') || (node->c == '\\')) && IsLeaf(node)) {
     		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));
     	} else {
         	return (1 + HowManyNodes(node->left) + HowManyNodes(node->right));
