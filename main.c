@@ -6,7 +6,9 @@
 #include "inc/binary.h"
 #define FRENTE 1
 #define TRAS 0
+#define BUFFER_SIZE 2
 typedef unsigned char byte;
+
 
 
 byte * ReadFile(FILE * file, int numBytes)
@@ -99,6 +101,11 @@ int Compress(){
     fclose(file);
     return 0;
 }
+
+int teste()
+{
+    return 1;
+}
 void Decompress()
 {
     FILE  * file = fopen("C:\\Users\\Valdir Jr\\Desktop\\a.txt","rb");
@@ -123,11 +130,54 @@ void Decompress()
     //Huff * tree = MakeTreeFromPreOrder(preorder,sizeTree);
     Huff * tree = NULL;
     byte in; // Byte com seus bits zero.
-    byte out = (byte)0;
-    byte curr; // Byte A ser Impresso.
     int estado_bit= 7;
-    Node * atual = GetHuffHead(tree);
-    while (fread(&in, 1, 1, file) >= 1)
+
+    int x=0;
+    rewind(file);
+   // Node * atual = GetHuffHead(tree);
+    printf("oi\n");
+    unsigned char  buffer [BUFFER_SIZE];
+    int tamBuffer=-1;
+
+    byte out = (byte)0;
+    while (( tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >=1)
+    {
+            printf("Uma leitura %d \n",tamBuffer);
+            for (i=0; i< tamBuffer; i++)
+            {
+                 if ((tamBuffer!=BUFFER_SIZE) && ((i+1) == tamBuffer))
+                 {
+                   //Estou no last byte.
+                     int j;
+                     for (j=7; j>=lixo; j--)
+                     {
+
+                     }
+                 }
+                else{
+
+                  /*   do {
+                         if (IsLeaf(atual))
+                         {
+                             out = GetNodeC(atual);
+                             atual= GetHuffHead(tree);
+                             fwrite(&out , 1 , sizeof(unsigned char) , saida );
+
+                         }
+                         atual = NavigateTree(atual, is_bit_i_set(buffer[i], estado_bit) == 0 ? 0 : 1);
+                         estado_bit--;
+                     }while(estado_bit!=-1);
+                     estado_bit=7;*/
+                 }
+
+
+
+            }
+
+
+    }
+/*
+    while (fread(&in, 1, 1, file) == 1)
     {
         if (estado_bit==-1)
         {
@@ -144,7 +194,7 @@ void Decompress()
             estado_bit--;
         }
         while(estado_bit>=0);
-    }
+    }*/
     fclose(file);
 
     // Ler Cabecalho.
@@ -155,6 +205,7 @@ void Decompress()
     //
 
 }
+
 
 int main()
 {
