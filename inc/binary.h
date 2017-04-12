@@ -4,13 +4,15 @@
 #ifndef BINARY_H
 #define BINARY_H
 
-#include "tabela.h"
-#include "huff.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include "tabela.h"
+#include "huff.h"
 
-unsigned char set_bit(unsigned char c, int i);
+/*
+ * Returns 0 if the bit 'i' isn't setted or returns a number different than 0, if 'i' is setted.
+ */
 int is_bit_i_set(unsigned char c, int i);
 
 /*
@@ -23,7 +25,7 @@ unsigned  char * IntegerToBinary(int integer, int string_size);
  * It receives as parameter an string, 'binary_number', of the binary number.
  * Returns a integer of the converted binary number.
  */
-int BinaryToInteger(unsigned char* binary_number);
+int BinaryToInteger(unsigned char * binary_number);
 
 /*
  * It receives as parameter an unsigned int *, 'frequencias', and an Tabela *, 'tabela_conversao';
