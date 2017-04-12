@@ -23,9 +23,14 @@ void Decompress(char * file_to_decompress, char * decompressed_file);
 int main() {
 
     int comp_descomp;
-    printf("Digite 1 para COMPRIMIR ou 0 para DESCOMPRIMIR.\n");
-    scanf("%d", &comp_descomp);
-    getchar();
+    do {
+        printf("Digite 1 para COMPRIMIR ou 0 para DESCOMPRIMIR.\n");
+        scanf("%d", &comp_descomp);
+        getchar();
+        if(comp_descomp != 1 && comp_descomp != 0) {
+            printf("Comando invalido!\n");
+        }
+    }while(comp_descomp != 1 && comp_descomp != 0);
     if(comp_descomp) {
         char file_to_compress[100];
         char file_created[100];
