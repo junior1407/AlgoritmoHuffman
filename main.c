@@ -7,6 +7,7 @@
 #define FRENTE 1
 #define TRAS 0
 #define BUFFER_SIZE 500
+#define STRING_FILE_SIZE 10000
 
 typedef unsigned char byte;
 
@@ -86,12 +87,15 @@ unsigned char * GetNBits(byte b,  int frente, int n) {
 
 void GetFrequency(FILE * file, unsigned int * frequencias) {
 
-    byte atual;
-    while(fread(&atual, 1, 1, file) >= 1) {
-        frequencias[atual]++;
+    byte atual[100000];
+    int read_size;
+    int i;
+    while((read_size = fread(&atual, 1, 100000, file)) >= 1) {
+        for(i = 0; i < read_size; ++i) {
+            frequencias[atual[i]]++;
+        }
     }
     rewind(file);
-    return;
 }
 
 unsigned char * ConcatString(unsigned char * str1, unsigned char * str2, int new_str_size) {
@@ -133,46 +137,57 @@ int TotalFrequency(unsigned int * frequencias) {
 
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias) {
 
-    byte file_char;
-    unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*65);
-    string_file[64] = '\0';
+    byte file_char[100000];
+    int read_size;
+    int read_position = 0;
+
+    unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*(STRING_FILE_SIZE+1));
+    string_file[STRING_FILE_SIZE] = '\0';
     int string_file_position = 0;
+
     int total_frequency = TotalFrequency(frequencias);
     ElementoTabela * binary_route;
     unsigned char * converted_binary;
     int current_route_size;
     int max_route = MaxRoute(tabela_conversao);
+
     unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
     int bits_to_add_position = 0;
     int i;
-    while(fread(&file_char, 1, 1, initial_file) >= 1) {
-        total_frequency--;
-        binary_route = GetTabelaElement(tabela_conversao, (int)file_char);
-        converted_binary = GetConvertedBits(binary_route);
-        current_route_size = GetElementoTabelaSize(binary_route);
-        for(i = 0; current_route_size; ++i, current_route_size--) {
-            bits_to_add[i] = converted_binary[i];
-        }
-        while(converted_binary[bits_to_add_position] != '\0') {
-            if(string_file_position == 64) {
+
+    while((read_size = fread(&file_char, 1, 100000, initial_file)) >= 1) {
+        while(read_size) {
+            total_frequency--;
+            binary_route = GetTabelaElement(tabela_conversao, (int)file_char[read_position]);
+            converted_binary = GetConvertedBits(binary_route);
+            current_route_size = GetElementoTabelaSize(binary_route);
+            for(i = 0; current_route_size; ++i, current_route_size--) {
+                bits_to_add[i] = converted_binary[i];
+            }
+            while(converted_binary[bits_to_add_position] != '\0') {
+                if(string_file_position == STRING_FILE_SIZE) {
+                    string_file_position = 0;
+                    PrintBinaryToCharacter(string_file, final_file);
+                }
+                string_file[string_file_position] = bits_to_add[bits_to_add_position];
+                bits_to_add_position++;
+                string_file_position++;
+            }
+            bits_to_add_position = 0;
+            if(string_file_position == STRING_FILE_SIZE) {
                 string_file_position = 0;
                 PrintBinaryToCharacter(string_file, final_file);
             }
-            string_file[string_file_position] = bits_to_add[bits_to_add_position];
-            bits_to_add_position++;
-            string_file_position++;
-        }
-        bits_to_add_position = 0;
-        if(string_file_position == 64) {
-            string_file_position = 0;
-            PrintBinaryToCharacter(string_file, final_file);
-        }
-        if(!total_frequency) {
-            if(string_file_position != 0) {
-                string_file[string_file_position] = '\0';
-                PrintBinaryToCharacter(string_file, final_file);
+            if(!total_frequency) {
+                if(string_file_position != 0) {
+                    string_file[string_file_position] = '\0';
+                    PrintBinaryToCharacter(string_file, final_file);
+                }
             }
+            read_size--;
+            read_position++;
         }
+        read_position = 0;
     }
 }
 
