@@ -1,6 +1,7 @@
 #include "../inc/huff.h"
 
 struct Node {
+
     unsigned char c;
     int freq;
     struct Node * next;
@@ -9,43 +10,38 @@ struct Node {
 };
 
 struct Huff {
-    struct Node * head;
+
     int size;
+    struct Node * head;
 };
 
 Huff * NewHuff() {
-	Huff * newHuff = (Huff*) malloc(sizeof(Huff));
+
+	Huff * newHuff = (Huff *)malloc(sizeof(Huff));
 	newHuff->head = NULL;
 	newHuff->size = 0;
 	return newHuff;
 }
 
 int IsLeaf(Node * check) {
-    	if((check->left == NULL) && (check->right == NULL)) {
-            return 1;
-        }
+
+    if((check->left == NULL) && (check->right == NULL)) {
+        return 1;
+    }
 	return 0;
 }
 
+Node * NavigateTree(Node * atual, int direcao) {
 
-Node * NavigateTree(Node * atual, int direcao)
-{
-    if (direcao == 0)
-    {
+    if(direcao == 0) {
         return atual->left;
-    }
-    else
-    {
+    } else {
         return  atual->right;
     }
-
-
-
 }
 
-
-
 Huff * MakeTree(unsigned int * frequencias) {
+
 	Huff * huff = NewHuff();
 	int i;
 	for(i = 0; i < 256; i++) {
@@ -53,8 +49,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 			AddNode(huff, NewNode(i, frequencias[i]));
 		}
 	}
-	while(huff->size > 1)
-    {
+	while(huff->size > 1) {
 		Node * esquerda = PopNode(huff);
 		Node * direita = PopNode(huff);
 		Node * soma = NewNode('*', (esquerda->freq + direita->freq));
@@ -66,6 +61,7 @@ Huff * MakeTree(unsigned int * frequencias) {
 }
 
 Huff * MakeTreeFromPreOrder(unsigned char * array, int size) {
+
     int current = 0;
     Node * node = NewEmptyNode();
     Huff * huff = NewHuff();
@@ -74,18 +70,17 @@ Huff * MakeTreeFromPreOrder(unsigned char * array, int size) {
 }
 
 Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, Node * node) {
+
     if(*current < size) {
-        if (array[*current] == '\\') {
+        if(array[*current] == '\\') {
             node->c = array[++*(current)];
             ++*(current);
             node->left = node->right = NULL;
-
             return node;
         } else if (array[*current] != '*') {
             node->c = array[*current];
             ++*(current);
             node->left = node->right = NULL;
-
             return node;
         } else {
             node->c = array[*current];
@@ -99,22 +94,24 @@ Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, 
 }
 
 Node * NewEmptyNode() {
-    Node * newNode = (Node*) malloc(sizeof(Node));
+
+    Node * newNode = (Node *)malloc(sizeof(Node));
     return newNode;
 }
 
 Node * NewNode(unsigned char c, int freq) {
-    Node * newNode = (Node*) malloc(sizeof(Node));
+
+    Node * newNode = (Node *)malloc(sizeof(Node));
     newNode->c = c;
     newNode->freq = freq;
     newNode->left = NULL;
     newNode->right = NULL;
     newNode->next = NULL;
-
     return newNode;
 }
 
 Node * PopNode(Huff * huff) {
+
     Node * temp = huff->head;
     if (huff->size == 1) {
         huff->head = NULL;
@@ -126,56 +123,39 @@ Node * PopNode(Huff * huff) {
     return temp;
 }
 
-void PrintList(Node * node) {
-    while (node!=NULL)
-    {
-        printf("(%c %d) ",node->c,node->freq);
-        node = node->next;
-    }
-    printf("\n");
-} // TO BE REMOVED.
-
 void AddNode(Huff * huff, Node * newNode) {
-    if (huff->size == 0) // Lista vazia
-    {
+
+    if (huff->size == 0) {
         huff->head = newNode;
         (huff->size)++;
-    }
-    else if (huff->head->freq >= newNode->freq) // Adiciona na cabeca
-    {
+    } else if (huff->head->freq >= newNode->freq) {
         newNode->next = huff->head;
         huff->head = newNode;
         (huff->size)++;
-    }
-    else // Adiciona meio/fim
-    {
+    } else {
         Node * atual = huff->head;
-        while(atual != NULL)
-        {
-            if (atual->next == NULL) // Chegou no fim da lista
-            {
+        while(atual != NULL) {
+            if (atual->next == NULL) {
                 atual->next = newNode;
                 (huff->size)++;
                 return;
             }
-            if ((atual->freq <= newNode->freq) && (atual->next->freq >= newNode->freq)) // Adiciona entre
-            {
-                newNode->next= atual->next;
-                atual->next= newNode;
+            if ((atual->freq <= newNode->freq) && (atual->next->freq >= newNode->freq)) {
+                newNode->next = atual->next;
+                atual->next = newNode;
                 (huff->size)++;
                 return;
             }
-            atual=atual->next;
-
+            atual = atual->next;
         }
-
     }
 }
 
 void PrintPreOrder(Node * head, FILE * new_file) {
+
 	if(head != NULL) {
 		if(((head->c == '*') || (head->c == '\\')) && IsLeaf(head)) {
-			fprintf(new_file, "\\%c", head->c);
+            fprintf(new_file, "\\%c", head->c);
 			PrintPreOrder(head->left, new_file);
 			PrintPreOrder(head->right, new_file);
 		} else {
@@ -187,6 +167,7 @@ void PrintPreOrder(Node * head, FILE * new_file) {
 }
 
 int HowManyNodes(Node * node) {
+
     if(node != NULL) {
     	if(((node->c == '*') || (node->c == '\\')) && IsLeaf(node)) {
     		return (2 + HowManyNodes(node->left) + HowManyNodes(node->right));
@@ -197,97 +178,89 @@ int HowManyNodes(Node * node) {
     return 0;
 }
 
-void CreatesConversionTable(Node*head, Tabela ** tabela, ElementoTabela ** percurso) {
-    //Condições de parada.
-    // Se for folha, deve salvar percurso e subir.
+void CreatesConversionTable(Node * head, Tabela ** tabela, ElementoTabela ** percurso) {
 
-    if ((head->left==NULL)&&(head->right==NULL))
-    {
+    if ((head->left == NULL)&&(head->right == NULL)) {
         ElementoTabela * tabela_element;
         tabela_element = CreateElementCopy(GetElementoTabelaFront(*percurso));
         SetElementoTabelaSize(tabela_element, GetElementoTabelaSize(*percurso));
         SetTabelaElemento(*tabela, tabela_element, head->c);
         Dequeue(*percurso);
-
-
         return;
     }
     Enqueue(*percurso,'0');
     CreatesConversionTable(head->left, tabela, percurso);
-
     Enqueue(*percurso,'1');
     CreatesConversionTable(head->right, tabela, percurso);
-
     Dequeue(*percurso);
-
 }
 
-unsigned char GetNodeC(Node *n)
-{
+unsigned char GetNodeC(Node * n) {
+
     return  n->c;
 }
 
-void SetNodeC(Node * n, unsigned char c)
-{
+void SetNodeC(Node * n, unsigned char c) {
+
     n->c = c;
 }
 
-int GetNodeFreq(Node * n)
-{
+int GetNodeFreq(Node * n) {
+
     return  n->freq;
 }
 
-void SetNodeFreq(Node * n, int freq)
-{
+void SetNodeFreq(Node * n, int freq) {
+
     n->freq=freq;
 }
 
-Node * GetNodeNext(Node * n)
-{
+Node * GetNodeNext(Node * n) {
+
     return  n->next;
 }
 
-void SetNodeNext(Node * n, Node * next)
-{
+void SetNodeNext(Node * n, Node * next) {
+
     n->next= next;
 }
 
-Node * GetNodeLeft(Node * n)
-{
+Node * GetNodeLeft(Node * n) {
+
     return  n->left;
 }
 
-void SetNodeLeft(Node * n, Node * left)
-{
+void SetNodeLeft(Node * n, Node * left) {
+
     n->left= left;
 }
 
-Node * GetNodeRight(Node * n)
-{
+Node * GetNodeRight(Node * n) {
+
     return  n->right;
 }
 
-void SetNodeRight(Node * n, Node * right)
-{
+void SetNodeRight(Node * n, Node * right) {
+
     n->right= right;
 }
 
-Node * GetHuffHead(Huff * h)
-{
+Node * GetHuffHead(Huff * h) {
+
     return  h->head;
 }
 
-void SetHuffHead(Huff * h, Node * head)
-{
+void SetHuffHead(Huff * h, Node * head) {
+
     h->head = head;
 }
 
-int GetHuffSize(Huff * h)
-{
+int GetHuffSize(Huff * h) {
+
     return  h->size;
 }
 
-void SetHuffSize(Huff * h, int size)
-{
+void SetHuffSize(Huff * h, int size) {
+
     h->size= size;
 }

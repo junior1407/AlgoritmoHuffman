@@ -3,22 +3,15 @@
 //
 #include "../inc/binary.h"
 
-int is_bit_i_set(unsigned char c, int i)
-{
+int is_bit_i_set(unsigned char c, int i) {
+
     unsigned char mask = 1 << i;
     return mask & c;
 }
 
-unsigned char set_bit(unsigned char c, int i)
-{
-    unsigned char mask = 1 << i;
-    return mask | c;
-
-}
-
 unsigned char * IntegerToBinary(int integer, int string_size) {
 
-    unsigned char* binary_number = (unsigned char*)malloc(sizeof(unsigned char)*(string_size+1));
+    unsigned char * binary_number = (unsigned char *)malloc(sizeof(unsigned char)*(string_size+1));
     int i, rest;
     int flag = 0;
     rest = integer%2;
@@ -47,10 +40,10 @@ unsigned char * IntegerToBinary(int integer, int string_size) {
     return binary_number;
 }
 
-int BinaryToInteger(unsigned char* binary_number) {
+int BinaryToInteger(unsigned char * binary_number) {
 
     int number = 0;
-    int string_size = strlen((char*)binary_number);
+    int string_size = strlen((char *)binary_number);
     int i, j;
     for(i = string_size-1, j = 0; i >= 0; --i, ++j) {
         if(binary_number[i] == '1') {
@@ -69,7 +62,7 @@ unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversa
     for(i = 0; i < 256; ++i) {
         if(frequencias[i] > 0) {
             bits = GetElementoTabelaSize(GetTabelaElement(tabela_conversao, i));
-            total_bits += (frequencias[i] * bits);
+            total_bits += (frequencias[i]*bits);
         }
     }
     trash = IntegerToBinary(8-(total_bits%8), 3);
@@ -85,10 +78,9 @@ unsigned char * TreeSizeBinary(Huff * tree) {
 
 void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
 
-    unsigned char* str_8bits = (unsigned char*)malloc(sizeof(unsigned char)*9);
+    unsigned char * str_8bits = (unsigned char *)malloc(sizeof(unsigned char)*9);
     str_8bits[8] = '\0';
-    int string_size = strlen((char*)string);
-    printf("%d", string_size);
+    int string_size = strlen((char *)string);
     int rest_flag = (string_size - (string_size%8));
     int bit_position = 0, str_position = 0;
     while(str_position < rest_flag) {
