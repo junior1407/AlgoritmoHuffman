@@ -7,7 +7,7 @@
 #define FRENTE 1
 #define TRAS 0
 #define BUFFER_SIZE 500
-#define STRING_FILE_SIZE 10000
+#define STRING_FILE_SIZE 100000
 
 typedef unsigned char byte;
 
@@ -82,7 +82,6 @@ unsigned char * GetNBits(byte b,  int frente, int n) {
     }
     array[n] = '\0';
     return array;
-
 }
 
 void GetFrequency(FILE * file, unsigned int * frequencias) {
@@ -140,21 +139,17 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
     byte file_char[100000];
     int read_size;
     int read_position = 0;
-
     unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*(STRING_FILE_SIZE+1));
     string_file[STRING_FILE_SIZE] = '\0';
     int string_file_position = 0;
-
     int total_frequency = TotalFrequency(frequencias);
     ElementoTabela * binary_route;
     unsigned char * converted_binary;
     int current_route_size;
     int max_route = MaxRoute(tabela_conversao);
-
     unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
     int bits_to_add_position = 0;
     int i;
-
     while((read_size = fread(&file_char, 1, 100000, initial_file)) >= 1) {
         while(read_size) {
             total_frequency--;
