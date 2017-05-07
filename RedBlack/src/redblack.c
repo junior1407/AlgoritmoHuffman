@@ -20,7 +20,7 @@ Root * CreateRoot() {
     return root;
 }
 
-RedBlack * Grandparent(RedBlack * rb) {
+RedBlack * GrandParent(RedBlack * rb) {
     return rb->parent->parent;
 }
 
@@ -36,7 +36,7 @@ RedBlack * Uncle(RedBlack * rb) {
     return Brother(rb->parent);
 }
 
-RedBlack * NewRedblack(int value) {
+RedBlack * NewRedBlack(int value) {
     RedBlack * newRedBlack = malloc(sizeof(RedBlack));
     newRedBlack->value = value;
     newRedBlack->color = 'r';
@@ -83,7 +83,7 @@ void ReplaceNode(Root * root, RedBlack * oldRb, RedBlack * newRb) {
 }
 
 void AddRedBlackTree(Root * root, int value) {
-    RedBlack * newRedBlack = NewRedblack(value);
+    RedBlack * newRedBlack = NewRedBlack(value);
     if (root->root == NULL) {
         root->root = newRedBlack;
     } else {
@@ -111,4 +111,56 @@ void AddRedBlackTree(Root * root, int value) {
         newRedBlack->parent = rb;
     }
     AddCase1(root, newRedBlack);
+}
+
+void AddCase1(Root * root, RedBlack * rb) {
+    if (rb->parent == NULL) {
+        rb->color = 'b';
+    } else {
+        AddCase2(root, rb);
+    }
+}
+
+void AddCase2(Root * root, RedBlack * rb) {
+    if (rb->parent->color == 'b') {
+        return;
+    } else {
+        AddCase3(root, rb);
+    }
+}
+
+void AddCase3(Root * root, RedBlack * rb) {
+    if(Uncle(rb) == NULL) {
+        AddCase4(root, rb);
+        return;
+    }
+    if(Uncle(rb)->color == 'b') {
+        AddCase4(root, rb);
+    } else {
+        rb->parent->color = 'b';
+        Uncle(rb)->color = 'b';
+        GrandParent(rb)->color = 'r';
+        AddCase1(root, GrandParent(rb));
+    }
+}
+
+void AddCase4(Root * root, RedBlack * rb) {
+    if (rb == rb->parent->right && rb->parent == GrandParent(rb)->left) {
+        RotateLeft(root, rb->parent);
+        rb = rb->left;
+    } else if (rb == rb->parent->left && rb->parent == GrandParent(rb)->right) {
+        RotateRight(root, rb->parent);
+        rb = rb->right;
+    }
+    AddCase5(root, rb);
+}
+
+void AddCase5(Root * root, RedBlack * rb) {
+    rb->parent->color = 'b';
+    GrandParent(rb)->color = 'r';
+    if (rb == rb->parent->left && rb->parent == GrandParent(rb)->left) {
+        RotateRight(root, GrandParent(rb));
+    } else {
+        RotateLeft(root, GrandParent(rb));
+    }
 }

@@ -19,7 +19,7 @@ Root * CreateRoot();
 /*
  * Return Grandparent's Node.
  */
-RedBlack * Grandparent(RedBlack * rb);
+RedBlack * GrandParent(RedBlack * rb);
 
 /*
  * Return Brother's Node.
@@ -56,4 +56,13 @@ void ReplaceNode(Root * root, RedBlack * oldRb, RedBlack * newRb);
  * Add a new Node in RedBlack Tree.
  */
 void AddRedBlackTree(Root * root, int value);
+
+/*
+ * Try every possible case in the Add function.
+ */
+void AddCase1(Root * root, RedBlack * rb);
+void AddCase2(Root * root, RedBlack * rb);
+void AddCase3(Root * root, RedBlack * rb);
+void AddCase4(Root * root, RedBlack * rb);
+void AddCase5(Root * root, RedBlack * rb);
 #endif
