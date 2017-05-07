@@ -65,4 +65,9 @@ void AddCase2(Root * root, RedBlack * rb);
 void AddCase3(Root * root, RedBlack * rb);
 void AddCase4(Root * root, RedBlack * rb);
 void AddCase5(Root * root, RedBlack * rb);
+
+/*
+ * Print all the tree in pre-order.
+ */
+void PrintPreorder(RedBlack * root);
 #endif

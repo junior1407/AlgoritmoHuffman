@@ -1,5 +1,6 @@
 #include "../inc/redblack.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct RedBlack {
 
@@ -164,3 +165,39 @@ void AddCase5(Root * root, RedBlack * rb) {
         RotateLeft(root, GrandParent(rb));
     }
 }
+
+void PrintPreorder(RedBlack * root) {
+    if(root != NULL) {
+        printf("[%d, %c]", root->value, root->color);
+        PrintPreorder(root->left);
+        PrintPreorder(root->right);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
