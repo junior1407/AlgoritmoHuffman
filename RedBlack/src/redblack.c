@@ -1,17 +1,17 @@
 #include "../inc/redblack.h"
 #include <stdlib.h>
 
-struct Redblack {
+struct RedBlack {
 
     int value;
     char color; // r = Red, b = Black
-    struct Redblack * parent;
-    struct Redblack * right;
-    struct Redblack * left;
+    struct RedBlack* parent;
+    struct RedBlack * right;
+    struct RedBlack * left;
 };
 
 struct Root {
-    Redblack * root;
+    RedBlack * root;
 };
 
 Root * CreateRoot() {
@@ -20,11 +20,11 @@ Root * CreateRoot() {
     return root;
 }
 
-Redblack * Grandparent(Redblack * rb) {
+RedBlack * Grandparent(RedBlack * rb) {
     return rb->parent->parent;
 }
 
-Redblack * Brother(Redblack * rb) {
+RedBlack * Brother(RedBlack * rb) {
     if(rb == rb->parent->left) {
         return rb->parent->right;
     } else {
@@ -32,6 +32,16 @@ Redblack * Brother(Redblack * rb) {
     }
 }
 
-Redblack * Uncle(Redblack * rb) {
+RedBlack * Uncle(RedBlack * rb) {
     return Brother(rb->parent);
+}
+
+RedBlack * NewRedblack(int value) {
+    RedBlack * newRedBlack = malloc(sizeof(RedBlack));
+    newRedBlack->value = value;
+    newRedBlack->color = 'r';
+    newRedBlack->left = NULL;
+    newRedBlack->right = NULL;
+    newRedBlack->parent = NULL;
+    return newRedBlack;
 }

@@ -2,32 +2,37 @@
 #define REDBLACK_H
 
 /*
- * Data Structure for the Redblack Tree.
+ * Data Structure for the RedBlack Tree.
  */
-typedef struct Redblack Redblack;
+typedef struct RedBlack RedBlack;
 
 /*
- * Data Structure for the Redblack Tree Root.
+ * Data Structure for the RedBlack Tree Root.
  */
 typedef struct Root Root;
 
 /*
- * Creates a New Redblack Tree Root.
+ * Creates a New RedBlack Tree Root.
  */
 Root * CreateRoot();
 
 /*
  * Return Grandparent's Node.
  */
-Redblack * Grandparent(Redblack * rb);
+RedBlack * Grandparent(RedBlack * rb);
 
 /*
  * Return Brother's Node.
  */
-Redblack * Brother(Redblack * rb);
+RedBlack * Brother(RedBlack * rb);
 
 /*
  * Return Uncle's Node.
  */
-Redblack * Uncle(Redblack * rb);
+RedBlack * Uncle(RedBlack * rb);
+
+/*
+ * Creates a New RedBlack Tree Node.
+ */
+RedBlack * NewRedblack(int value);
 #endif
