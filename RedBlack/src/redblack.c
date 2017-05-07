@@ -81,3 +81,34 @@ void ReplaceNode(Root * root, RedBlack * oldRb, RedBlack * newRb) {
         newRb->parent = oldRb->parent;
     }
 }
+
+void AddRedBlackTree(Root * root, int value) {
+    RedBlack * newRedBlack = NewRedblack(value);
+    if (root->root == NULL) {
+        root->root = newRedBlack;
+    } else {
+        RedBlack * rb = root->root;
+        while (1) {
+            if (value == rb->value) {
+                free (newRedBlack);
+                return;
+            } else if (value < rb->value) {
+                if (rb->left == NULL) {
+                    rb->left = newRedBlack;
+                    break;
+                } else {
+                    rb = rb->left;
+                }
+            } else {
+                if (rb->right == NULL) {
+                    rb->right = newRedBlack;
+                    break;
+                } else {
+                    rb = rb->right;
+                }
+            }
+        }
+        newRedBlack->parent = rb;
+    }
+    AddCase1(root, newRedBlack);
+}
