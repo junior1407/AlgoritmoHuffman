@@ -214,7 +214,7 @@ void DeleteRedBlack(Root * root, int value) {
     }
     child = rb->right == NULL ? rb->left  : rb->right;
     if (rb->color == 'b') {
-        rb->color = child->color;
+        rb->color = Color(child);
         DeleteCase1(root, rb);
     }
     ReplaceNode(root, rb, child);
