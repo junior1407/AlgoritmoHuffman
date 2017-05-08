@@ -75,4 +75,34 @@ void PrintPreorder(RedBlack * root);
  * Return the Root Node.
  */
 RedBlack * RootNode(Root * root);
+
+/*
+ * Return the Max Node.
+ */
+RedBlack * MaxNode(RedBlack * rb);
+
+/*
+ * Find a given Node.
+ */
+RedBlack * SearchNode(Root * root, int value);
+
+/*
+ * Return the Node color, black if it's NULL.
+ */
+char Color(RedBlack * rb);
+
+/*
+ * Delete a given Node in RedBlack Tree.
+ */
+void DeleteRedBlack(Root * root, int value);
+
+/*
+ * Try every possible case in the Delete function.
+ */
+void DeleteCase1(Root * root, RedBlack * rb);
+void DeleteCase2(Root * root, RedBlack * rb);
+void DeleteCase3(Root * root, RedBlack * rb);
+void DeleteCase4(Root * root, RedBlack * rb);
+void DeleteCase5(Root * root, RedBlack * rb);
+void DeleteCase6(Root * root, RedBlack * rb);
 #endif

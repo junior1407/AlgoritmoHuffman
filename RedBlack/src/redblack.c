@@ -131,11 +131,7 @@ void AddCase2(Root * root, RedBlack * rb) {
 }
 
 void AddCase3(Root * root, RedBlack * rb) {
-    if(Uncle(rb) == NULL) {
-        AddCase4(root, rb);
-        return;
-    }
-    if(Uncle(rb)->color == 'b') {
+    if(Color(Uncle(rb)) == 'b') {
         AddCase4(root, rb);
     } else {
         rb->parent->color = 'b';
@@ -178,6 +174,118 @@ RedBlack * RootNode(Root * root) {
     return root->root;
 }
 
+RedBlack * MaxNode(RedBlack * rb) {
+    while (rb->right != NULL) {
+        rb = rb->right;
+    }
+    return rb;
+}
+
+RedBlack * SearchNode(Root * root, int value) {
+    RedBlack * rb = root->root;
+    while (rb != NULL) {
+        if (value == rb->value) {
+            return rb;
+        } else if (value < rb->value) {
+            rb = rb->left;
+        } else {
+            rb = rb->right;
+        }
+    }
+    return rb;
+}
+
+char Color(RedBlack * rb) {
+    if(rb == NULL) {
+        return 'b';
+    } else {
+        return rb->color;
+    }
+}
+
+void DeleteRedBlack(Root * root, int value) {
+    RedBlack * child;
+    RedBlack * rb = SearchNode(root, value);
+    if (rb == NULL) return;
+    if (rb->left != NULL && rb->right != NULL) {
+        RedBlack * max = MaxNode(rb->left);
+        rb->value = max->value;
+        rb = max;
+    }
+    child = rb->right == NULL ? rb->left  : rb->right;
+    if (rb->color == 'b') {
+        rb->color = child->color;
+        DeleteCase1(root, rb);
+    }
+    ReplaceNode(root, rb, child);
+    if (rb->parent == NULL && child != NULL)
+        child->color = 'b';
+    free(rb);
+}
+
+void DeleteCase1(Root * root, RedBlack * rb) {
+    if (rb->parent == NULL)
+        return;
+    else
+        DeleteCase2(root, rb);
+}
+
+void DeleteCase2(Root * root, RedBlack * rb) {
+    if (Brother(rb)->color == 'r') {
+        rb->parent->color = 'r';
+        Brother(rb)->color = 'b';
+        if (rb == rb->parent->left) {
+            RotateLeft(root, rb->parent);
+        } else {
+            RotateRight(root, rb->parent);
+        }
+    }
+    DeleteCase3(root, rb);
+}
+
+void DeleteCase3(Root * root, RedBlack * rb) {
+    if (Color(rb->parent) == 'b' && Color(Brother(rb)) == 'b' && Color(Brother(rb)->left) == 'b' && Color(Brother(rb)->right) == 'b') {
+        Brother(rb)->color = 'r';
+        DeleteCase1(root, rb->parent);
+    } else {
+        DeleteCase4(root, rb);
+    }
+}
+
+void DeleteCase4(Root * root, RedBlack * rb) {
+    if (Color(rb->parent) == 'r' && Color(Brother(rb)) == 'b' && Color(Brother(rb)->left) == 'b' && Color(Brother(rb)->right) == 'b') {
+        Brother(rb)->color = 'r';
+        rb->parent->color = 'b';
+    }
+    else
+        DeleteCase5(root, rb);
+}
+
+void DeleteCase5(Root * root, RedBlack * rb) {
+    if (rb == rb->parent->left && Color(Brother(rb)) == 'b' && Color(Brother(rb)->left) == 'r' && Color(Brother(rb)->right) == 'b') {
+        Brother(rb)->color = 'r';
+        Brother(rb)->left->color = 'b';
+        RotateRight(root, Brother(rb));
+    }
+    else if (rb == rb->parent->right && Color(Brother(rb)) == 'b' && Color(Brother(rb)->right) == 'r' && Color(Brother(rb)->left) == 'b') {
+        Brother(rb)->color = 'r';
+        Brother(rb)->right->color = 'b';
+        RotateLeft(root, Brother(rb));
+    }
+    DeleteCase6(root, rb);
+}
+
+void DeleteCase6(Root * root, RedBlack * rb) {
+    Brother(rb)->color = Color(rb->parent);
+    rb->parent->color = 'b';
+    if (rb == rb->parent->left) {
+        Brother(rb)->right->color = 'b';
+        RotateLeft(root, rb->parent);
+    } else {
+        Brother(rb)->left->color = 'b';
+        RotateRight(root, rb->parent);
+    }
+}
 
 
 
