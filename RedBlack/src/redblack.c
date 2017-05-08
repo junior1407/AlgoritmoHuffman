@@ -174,6 +174,10 @@ void PrintPreorder(RedBlack * root) {
     }
 }
 
+RedBlack * RootNode(Root * root) {
+    return root->root;
+}
+
 
 
 

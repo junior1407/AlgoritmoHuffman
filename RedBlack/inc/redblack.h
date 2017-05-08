@@ -70,4 +70,9 @@ void AddCase5(Root * root, RedBlack * rb);
  * Print all the tree in pre-order.
  */
 void PrintPreorder(RedBlack * root);
+
+/*
+ * Return the Root Node.
+ */
+RedBlack * RootNode(Root * root);
 #endif
