@@ -31,7 +31,7 @@ int BinaryToInteger(unsigned char * binary_number);
  * It receives as parameter an unsigned int *, 'frequencias', and an Tabela *, 'tabela_conversao';
  * Calculate and return in a string the amount of trash in binary number;
  */
-unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao);
+unsigned char * TrashBinary(long long int * frequencias, Tabela * tabela_conversao);
 
 /*
  * It receives as parameter an Huff *, 'tree'.

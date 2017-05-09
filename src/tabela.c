@@ -9,7 +9,7 @@ struct Linha{
     struct Linha * next;
 };
 
-struct ElementoTabela {
+struct Percurso {
 
     int size;
     struct Linha * front;
@@ -18,7 +18,9 @@ struct ElementoTabela {
 
 struct Tabela {
 
-    struct ElementoTabela ** elems; // Array de 256 Posições.
+    struct Percurso ** elems; // Array de 256 Posições.
+
+
 };
 
 Linha * CreateLinha(unsigned char i) {
@@ -29,9 +31,9 @@ Linha * CreateLinha(unsigned char i) {
     return novo;
 }
 
-ElementoTabela * CreateElementoTabela() {
+Percurso * CreatePercurso() {
 
-    ElementoTabela * novo = (ElementoTabela *)malloc(sizeof(ElementoTabela));
+    Percurso * novo = (Percurso *)malloc(sizeof(Percurso));
     novo->size=0;
     novo->front=NULL;
     return  novo;
@@ -40,15 +42,15 @@ ElementoTabela * CreateElementoTabela() {
 Tabela * CreateTabela() {
 
     Tabela * novo = (Tabela *)malloc(sizeof(Tabela));
-    novo->elems = (ElementoTabela **)malloc(256*sizeof(ElementoTabela));
+    novo->elems = (Percurso **)malloc(256*sizeof(Percurso));
     int i;
     for (i = 0; i < 256; i++) {
-        (novo->elems)[i] = CreateElementoTabela();
+        (novo->elems)[i] = CreatePercurso();
     }
     return novo;
 }
 
-void Enqueue(ElementoTabela *tabela, unsigned char i) {
+void Enqueue(Percurso *tabela, unsigned char i) {
 
     Linha * novo = CreateLinha(i);
     if (tabela->size==0) {
@@ -61,9 +63,9 @@ void Enqueue(ElementoTabela *tabela, unsigned char i) {
     (tabela->size)++;
 }
 
-ElementoTabela * CreateElementCopy(Linha * head) {
+Percurso * CreatePercursoCopy(Linha * head) {
 
-    ElementoTabela * nova = CreateElementoTabela();
+    Percurso * nova = CreatePercurso();
     while(head!=NULL) {
         Enqueue(nova, head->i);
         head = head->next;
@@ -71,7 +73,7 @@ ElementoTabela * CreateElementCopy(Linha * head) {
     return nova;
 }
 
-unsigned char Dequeue(ElementoTabela * elem) {
+unsigned char Dequeue(Percurso * elem) {
 
     if (elem->size !=0) {
         if (elem->size == 1) {
@@ -95,8 +97,7 @@ unsigned char Dequeue(ElementoTabela * elem) {
     }
 }
 
-unsigned char * GetConvertedBits(ElementoTabela * requested_route) {
-
+unsigned char * TransformaCaminhoString(Percurso * requested_route) {
     int route_size = requested_route->size;
     int position = 0;
     unsigned char * bits = (unsigned char *)malloc(sizeof(unsigned char)*(route_size+1));
@@ -143,47 +144,47 @@ void SetLinhaNext(Linha * l, Linha * next) {
     l->next= next;
 }
 
-int GetElementoTabelaSize(ElementoTabela * elem) {
+int GetPercursoSize(Percurso * elem) {
 
     return  elem ->size;
 }
 
-void SetElementoTabelaSize(ElementoTabela * elem, int size) {
+void SetPercursoSize(Percurso * elem, int size) {
 
     elem->size = size;
 }
 
-Linha * GetElementoTabelaFront(ElementoTabela * elem) {
+Linha * GetPercursoFront(Percurso * elem) {
 
     return elem->front;
 }
 
-void SetElementoTabelaFront(ElementoTabela * elem, Linha * front ) {
+void SetPercursoFront(Percurso * elem, Linha * front ) {
 
     elem->front = front;
 }
 
-Linha * GetElementoTabelaRear(ElementoTabela * elem) {
+Linha * GetPercursoRear(Percurso * elem) {
 
     return elem->rear;
 }
 
-void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear ) {
+void SetPercursoRear(Percurso * elem, Linha * rear ) {
 
     elem->rear = rear;
 }
 
-ElementoTabela * GetTabelaElement(Tabela * tabela, int index) {
+Percurso * GetTabelaElement(Tabela * tabela, int index) {
 
     return tabela->elems[index];
 }
 
-ElementoTabela ** GetTabelaElements(Tabela * tabela) {
+Percurso ** GetTabelaElements(Tabela * tabela) {
 
     return tabela->elems;
 }
 
-void SetTabelaElemento(Tabela * tabela, ElementoTabela * elemento, int pos) {
+void SetTabelaPercurso(Tabela * tabela, Percurso * elemento, int pos) {
 
     tabela->elems[pos] = elemento;
 }

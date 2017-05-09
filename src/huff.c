@@ -3,7 +3,7 @@
 struct Node {
 
     unsigned char c;
-    int freq;
+    long long int freq;
     struct Node * next;
     struct Node * left;
     struct Node * right;
@@ -40,7 +40,7 @@ Node * NavigateTree(Node * atual, int direcao) {
     }
 }
 
-Huff * MakeTree(unsigned int * frequencias) {
+Huff * MakeTree(long long int * frequencias) {
 
 	Huff * huff = NewHuff();
 	int i;
@@ -99,7 +99,7 @@ Node * NewEmptyNode() {
     return newNode;
 }
 
-Node * NewNode(unsigned char c, int freq) {
+Node * NewNode(unsigned char c, long long int freq) {
 
     Node * newNode = (Node *)malloc(sizeof(Node));
     newNode->c = c;
@@ -128,19 +128,19 @@ void AddNode(Huff * huff, Node * newNode) {
     if (huff->size == 0) {
         huff->head = newNode;
         (huff->size)++;
-    } else if (huff->head->freq >= newNode->freq) {
+    } else if (huff->head->freq >= newNode->freq) { //Inicio
         newNode->next = huff->head;
         huff->head = newNode;
         (huff->size)++;
-    } else {
+    } else {  // Meio/Fim
         Node * atual = huff->head;
         while(atual != NULL) {
-            if (atual->next == NULL) {
+            if (atual->next == NULL) { //Fimzaum
                 atual->next = newNode;
                 (huff->size)++;
                 return;
             }
-            if ((atual->freq <= newNode->freq) && (atual->next->freq >= newNode->freq)) {
+            if ((atual->freq <= newNode->freq) && (atual->next->freq >= newNode->freq)) { //Meinho
                 newNode->next = atual->next;
                 atual->next = newNode;
                 (huff->size)++;
@@ -178,13 +178,13 @@ int HowManyNodes(Node * node) {
     return 0;
 }
 
-void CreatesConversionTable(Node * head, Tabela ** tabela, ElementoTabela ** percurso) {
+void CreatesConversionTable(Node * head, Tabela ** tabela, Percurso ** percurso) {
 
     if ((head->left == NULL)&&(head->right == NULL)) {
-        ElementoTabela * tabela_element;
-        tabela_element = CreateElementCopy(GetElementoTabelaFront(*percurso));
-        SetElementoTabelaSize(tabela_element, GetElementoTabelaSize(*percurso));
-        SetTabelaElemento(*tabela, tabela_element, head->c);
+        Percurso * tabela_element;
+        tabela_element = CreatePercursoCopy(GetPercursoFront(*percurso)); // Create copy of the current path.
+        SetPercursoSize(tabela_element, GetPercursoSize(*percurso));
+        SetTabelaPercurso(*tabela, tabela_element, head->c);
         Dequeue(*percurso);
         return;
     }

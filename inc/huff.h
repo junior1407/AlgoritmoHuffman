@@ -23,7 +23,7 @@ Huff * NewHuff();
 /*
  * Given the frequency list of Bytes, this method Generates the Huffman Tree. Returns the New Tree.
  */
-Huff * MakeTree(unsigned int * frequencias);
+Huff * MakeTree(long long int * frequencias);
 
 /*
  * Given the PreOrderTree, It generates the HuffMan's Tree. Returns the Tree.
@@ -34,7 +34,7 @@ Node * MakeTreeFromPreOrderUtil(unsigned char * array, int size, int * current, 
 /*
  * Given the Node's Atribbutes, It generates a new HuffMan's Tree Node. Returns the New Node.
  */
-Node * NewNode(unsigned char c, int freq);
+Node * NewNode(unsigned char c, long long int freq);
 Node * NewEmptyNode();
 
 /*
@@ -59,9 +59,9 @@ int IsLeaf(Node * check);
 
 /*
  * Creates a Conversion table to speed up the process of encoding.
- * Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empy Elemento Tabela representing the navigation of the tree.
+ * Given the First Node of a Huffman's Tree, An Empty Tabela in order to be filled in, An Empty Percurso representing the navigation of the tree.
  */
-void CreatesConversionTable(Node * head, Tabela ** tabela, ElementoTabela ** percurso);
+void CreatesConversionTable(Node * head, Tabela ** tabela, Percurso ** percurso);
 
 /*
  * It receives a Node * type, 'node', as a parameter and returns a int with the tree size (total number of nodes);

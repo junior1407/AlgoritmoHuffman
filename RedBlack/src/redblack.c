@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 struct RedBlack {
-
     int value;
     char color; // r = Red, b = Black
     struct RedBlack* parent;
@@ -114,7 +113,7 @@ void AddRedBlackTree(Root * root, int value) {
     AddCase1(root, newRedBlack);
 }
 
-void AddCase1(Root * root, RedBlack * rb) {
+void AddCase1(Root * root, RedBlack * rb) { // Caso raiz
     if (rb->parent == NULL) {
         rb->color = 'b';
     } else {
@@ -125,15 +124,15 @@ void AddCase1(Root * root, RedBlack * rb) {
 void AddCase2(Root * root, RedBlack * rb) {
     if (rb->parent->color == 'b') {
         return;
-    } else {
+    } else { // Vermelho Vermelho
         AddCase3(root, rb);
     }
 }
 
 void AddCase3(Root * root, RedBlack * rb) {
     if(Color(Uncle(rb)) == 'b') {
-        AddCase4(root, rb);
-    } else {
+        AddCase4(root, rb);  // Caso Rotacao
+    } else {  // Caso Recolorir
         rb->parent->color = 'b';
         Uncle(rb)->color = 'b';
         GrandParent(rb)->color = 'r';
@@ -142,7 +141,7 @@ void AddCase3(Root * root, RedBlack * rb) {
 }
 
 void AddCase4(Root * root, RedBlack * rb) {
-    if (rb == rb->parent->right && rb->parent == GrandParent(rb)->left) {
+    if (rb == rb->parent->right && rb->parent == GrandParent(rb)->left) { // ED
         RotateLeft(root, rb->parent);
         rb = rb->left;
     } else if (rb == rb->parent->left && rb->parent == GrandParent(rb)->right) {

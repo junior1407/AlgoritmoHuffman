@@ -13,11 +13,11 @@ typedef unsigned char byte;
 
 byte * ReadFile(FILE * file, int numBytes);
 unsigned char * GetNBits(byte b,  int frente, int n);
-void GetFrequency(FILE * file, unsigned int * frequencias);
+void GetFrequency(FILE * file, long long int * frequencias);
 unsigned char * ConcatString(unsigned char * str1, unsigned char * str2, int new_str_size);
-void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file);
-int TotalFrequency(unsigned int * frequencias);
-void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias);
+void PrintHeader(long long int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file);
+int TotalFrequency(long long int * frequencias);
+void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias);
 void Compress(char * file_to_compress, char * file_created);
 void Decompress(char * file_to_decompress, char * decompressed_file);
 
@@ -85,12 +85,12 @@ unsigned char * GetNBits(byte b,  int frente, int n) {
 
 }
 
-void GetFrequency(FILE * file, unsigned int * frequencias) {
+void GetFrequency(FILE * file, long long int * frequencias) {
 
-    byte atual[100000];
+    byte atual[BUFFER_SIZE];
     int read_size;
     int i;
-    while((read_size = fread(&atual, 1, 100000, file)) >= 1) {
+    while((read_size = fread(&atual, 1, BUFFER_SIZE, file)) >= 1) {
         for(i = 0; i < read_size; ++i) {
             frequencias[atual[i]]++;
         }
@@ -114,7 +114,7 @@ unsigned char * ConcatString(unsigned char * str1, unsigned char * str2, int new
     return new_str;
 }
 
-void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file) {
+void PrintHeader(long long int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file) {
 
     unsigned char * trash = TrashBinary(frequencias, tabela_conversao);
     unsigned char * tree_size = TreeSizeBinary(tree);
@@ -123,7 +123,7 @@ void PrintHeader(unsigned int * frequencias, Huff * tree, Tabela * tabela_conver
     PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
-int TotalFrequency(unsigned int * frequencias) {
+int TotalFrequency(long long int * frequencias) {
 
     int i;
     int total_frenquency = 0;
@@ -135,36 +135,44 @@ int TotalFrequency(unsigned int * frequencias) {
     return total_frenquency;
 }
 
-void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, unsigned int * frequencias) {
+void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias) {
 
-    byte file_char[100000];
+
     int read_size;
-    int read_position = 0;
+
 
     unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*(STRING_FILE_SIZE+1));
     string_file[STRING_FILE_SIZE] = '\0';
     int string_file_position = 0;
 
     int total_frequency = TotalFrequency(frequencias);
-    ElementoTabela * binary_route;
-    unsigned char * converted_binary;
+    Percurso * elementoConversao;
+    unsigned char * string_route;
     int current_route_size;
     int max_route = MaxRoute(tabela_conversao);
 
     unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
     int bits_to_add_position = 0;
     int i;
+    int read_position = 0;
+    byte bytes_lidos[BUFFER_SIZE];
+    while((read_size = fread(&bytes_lidos, 1, BUFFER_SIZE, initial_file)) >= 1) {
+        // ABC
+        // A = 01
+        // B = 1
+        // C = 00
 
-    while((read_size = fread(&file_char, 1, 100000, initial_file)) >= 1) {
+
         while(read_size) {
             total_frequency--;
-            binary_route = GetTabelaElement(tabela_conversao, (int)file_char[read_position]);
-            converted_binary = GetConvertedBits(binary_route);
-            current_route_size = GetElementoTabelaSize(binary_route);
+            elementoConversao = GetTabelaElement(tabela_conversao, (int)bytes_lidos[read_position]);
+            string_route = TransformaCaminhoString(elementoConversao);
+            current_route_size = GetPercursoSize(elementoConversao);
+
             for(i = 0; current_route_size; ++i, current_route_size--) {
-                bits_to_add[i] = converted_binary[i];
+                bits_to_add[i] = string_route[i];
             }
-            while(converted_binary[bits_to_add_position] != '\0') {
+            while(string_route[bits_to_add_position] != '\0') {
                 if(string_file_position == STRING_FILE_SIZE) {
                     string_file_position = 0;
                     PrintBinaryToCharacter(string_file, final_file);
@@ -195,11 +203,11 @@ void Compress(char * file_to_compress, char * file_created) {
 
     FILE * file = fopen(file_to_compress, "rb");
     FILE * new_file = fopen(file_created, "wb");
-    unsigned int frequencias[256] = {0};
+    long long int frequencias[256] = {0};
     GetFrequency(file, frequencias);
     Huff * tree = MakeTree(frequencias);
     Tabela * tabelaConversao = CreateTabela();
-    ElementoTabela * percurso = CreateElementoTabela();
+    Percurso * percurso = CreatePercurso();
     CreatesConversionTable(GetHuffHead(tree), &tabelaConversao, &percurso);
     rewind(file);
     PrintHeader(frequencias, tree, tabelaConversao, new_file);
@@ -222,24 +230,23 @@ void Decompress(char * file_to_decompress, char * decompressed_file) {
     int i;
     byte * preorder = ReadFile(file, sizeTree);
     Huff * tree = MakeTreeFromPreOrder(preorder, sizeTree);
-    PrintPreOrder(GetHuffHead(tree), NULL);
     byte out;
     Node * atual = GetHuffHead(tree);
     unsigned char buffer[BUFFER_SIZE];
     int tamBuffer;
     while((tamBuffer = fread(buffer, 1, BUFFER_SIZE, file)) >= 1) {
-        for(i = 0; i < tamBuffer; i++) {
+        for(i = 0; i < tamBuffer; i++) { // Itera entre bytes.
             int limiterepet = 0;
-            if((tamBuffer != BUFFER_SIZE) && ((i+1) == tamBuffer)) {
+            if((tamBuffer != BUFFER_SIZE) && ((i+1) == tamBuffer)) { // Ultimo byte da leitura incompleta.
                 limiterepet = lixo;
             }
             int j;
-            for(j = 7; j >= limiterepet; j--) {
+            for(j = 7; j >= limiterepet; j--) { // Itera bits
                 atual = NavigateTree(atual, is_bit_i_set(buffer[i], j) == 0 ? 0 : 1);
                 if(IsLeaf(atual)) {
                     out = GetNodeC(atual);
-                    atual = GetHuffHead(tree);
                     fwrite(&out, 1, sizeof(unsigned char), saida);
+                    atual = GetHuffHead(tree);
                 }
             }
         }

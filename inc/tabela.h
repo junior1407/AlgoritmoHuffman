@@ -11,7 +11,7 @@
 /*
  * Data Structure for the informantion about the enconding of each byte.
  */
-typedef struct ElementoTabela ElementoTabela;
+typedef struct Percurso Percurso;
 
 /*
  * Data Structure for the Conversion Table.
@@ -29,9 +29,9 @@ typedef struct Linha Linha;
 Tabela * CreateTabela();
 
 /*
- * Creates an empty "ElementoTabela".
+ * Creates an empty "Percurso".
  */
-ElementoTabela * CreateElementoTabela();
+Percurso * CreatePercurso();
 
 /*
  * Creates a "Linha" given an unsigned char containing '0' or '1'.
@@ -39,24 +39,24 @@ ElementoTabela * CreateElementoTabela();
 Linha * CreateLinha(unsigned char i);
 
 /*
- * Adds a '0' or '1' to a given "ElementoTabela" representing the enconding of a byte.
+ * Adds a '0' or '1' to a given "Percurso" representing the enconding of a byte.
  */
-void Enqueue(ElementoTabela * elem, unsigned char i);
+void Enqueue(Percurso * elem, unsigned char i);
 
 /*
  * Removes the last bit of a given enconding. Returns the deleted bit.
  */
-unsigned char Dequeue(ElementoTabela * elem);
+unsigned char Dequeue(Percurso * elem);
 
 /*
- * Creates a copy of a given enconding to a new "ElementoTabela".
+ * Creates a copy of a given enconding to a new "Percurso".
  */
-ElementoTabela * CreateElementCopy(Linha * head);
+Percurso * CreatePercursoCopy(Linha * head);
 
 /*
- * It receives an ElementoTabela *, 'requested_route', and returns a string with the respective binary route (Linha->char).
+ * It receives an Percurso *, 'requested_route', and returns a string with the respective binary route (Linha->char).
  */
-unsigned char * GetConvertedBits(ElementoTabela * requested_route);
+unsigned char * TransformaCaminhoString(Percurso * requested_route);
 
 /*
  * Returns the size of the largest route in conversion table.
@@ -72,21 +72,21 @@ Linha * GetLinhaNext(Linha * l);
 void SetLinhaNext(Linha * l, Linha * next);
 
 /*
- * Gets and Sets for the Struct "ElementoTabela".
+ * Gets and Sets for the Struct "Percurso".
  */
-int GetElementoTabelaSize(ElementoTabela * elem);
-void SetElementoTabelaSize(ElementoTabela * elem, int size);
-Linha * GetElementoTabelaFront(ElementoTabela * elem);
-void SetElementoTabelaFront(ElementoTabela * elem, Linha * front );
-Linha * GetElementoTabelaRear(ElementoTabela * elem);
-void SetElementoTabelaRear(ElementoTabela * elem, Linha * rear );
+int GetPercursoSize(Percurso * elem);
+void SetPercursoSize(Percurso * elem, int size);
+Linha * GetPercursoFront(Percurso * elem);
+void SetPercursoFront(Percurso * elem, Linha * front );
+Linha * GetPercursoRear(Percurso * elem);
+void SetPercursoRear(Percurso * elem, Linha * rear );
 
 /*
  * Gets and Sets from the Struct "Tabela".
  */
-ElementoTabela * GetTabelaElement(Tabela * tabela, int index);
-ElementoTabela ** GetTabelaElements(Tabela * tabela);
-void SetTabelaElemento(Tabela * tabela, ElementoTabela * elemento, int pos);
+Percurso * GetTabelaElement(Tabela * tabela, int index);
+Percurso ** GetTabelaElements(Tabela * tabela);
+void SetTabelaPercurso(Tabela * tabela, Percurso * elemento, int pos);
 
 
 #endif

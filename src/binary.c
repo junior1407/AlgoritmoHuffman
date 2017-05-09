@@ -53,16 +53,16 @@ int BinaryToInteger(unsigned char * binary_number) {
     return number;
 }
 
-unsigned char * TrashBinary(unsigned int * frequencias, Tabela * tabela_conversao) {
+unsigned char * TrashBinary(long long int * frequencias, Tabela * tabela_conversao) {
 
-    int total_bits = 0;
-    int bits;
+    long long int total_bits = 0;
+    int tamanho_caminho;
     unsigned char * trash;
     int i;
     for(i = 0; i < 256; ++i) {
         if(frequencias[i] > 0) {
-            bits = GetElementoTabelaSize(GetTabelaElement(tabela_conversao, i));
-            total_bits += (frequencias[i]*bits);
+            tamanho_caminho = GetPercursoSize(GetTabelaElement(tabela_conversao, i));
+            total_bits += (frequencias[i]*tamanho_caminho);
         }
     }
     trash = IntegerToBinary(8-(total_bits%8), 3);
@@ -92,7 +92,7 @@ void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
             fprintf(new_file, "%c", (unsigned char)BinaryToInteger(str_8bits));
         }
     }
-    if(string_size - rest_flag) {
+    if(string_size - rest_flag) { // Bits quebradinhos
         int rest_bits = string_size - rest_flag;
         int i;
         for(i = 0; i < 8; ++i) {
