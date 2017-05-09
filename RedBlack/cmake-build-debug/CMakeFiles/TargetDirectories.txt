@@ -1,0 +1,3 @@
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/RedBlack/cmake-build-debug/CMakeFiles/RedBlack.dir
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/RedBlack/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Valdir Jr/Documents/GitHub/AlgoritmoHuffman/RedBlack/cmake-build-debug/CMakeFiles/rebuild_cache.dir
