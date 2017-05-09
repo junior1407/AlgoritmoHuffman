@@ -115,11 +115,24 @@ unsigned char * ConcatString(unsigned char * str1, unsigned char * str2, int new
 }
 
 void PrintHeader(long long int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file) {
-
     unsigned char * trash = TrashBinary(frequencias, tabela_conversao);
     unsigned char * tree_size = TreeSizeBinary(tree);
     unsigned char * first_16bits = ConcatString(trash, tree_size, 16);
-    PrintBinaryToCharacter(first_16bits, new_file);
+    byte out='\0';
+    int i;
+    int pos_bit = 7;
+    for (i=0; i< 17; i++)
+    {
+        if (pos_bit == -1) {
+            fwrite(&out, 1, sizeof(unsigned char),new_file);
+            pos_bit = 7;
+            out = '\0';
+        }
+        if ((first_16bits[i] - '0') == 1) {
+            out = set_bit(out, pos_bit);
+        }
+        pos_bit--;
+    }
     PrintPreOrder(GetHuffHead(tree), new_file);
 }
 
@@ -136,64 +149,6 @@ int TotalFrequency(long long int * frequencias) {
 }
 
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias) {
-
-/*
-    int read_size;
-
-
-    unsigned char * string_file = (unsigned char *)malloc(sizeof(unsigned char)*(STRING_FILE_SIZE+1));
-    string_file[STRING_FILE_SIZE] = '\0';
-    int string_file_position = 0;
-
-    int total_frequency = TotalFrequency(frequencias);
-    Percurso * elementoConversao;
-    unsigned char * string_route;
-    int current_route_size;
-    int max_route = MaxRoute(tabela_conversao);
-
-    unsigned char * bits_to_add = (unsigned char *)malloc(sizeof(char)*max_route);
-    int bits_to_add_position = 0;
-    int i;
-    int read_position = 0;
-    byte bytes_lidos[BUFFER_SIZE];
-    while((read_size = fread(&bytes_lidos, 1, BUFFER_SIZE, initial_file)) >= 1) {
-
-        while(read_size) {
-            total_frequency--;
-            elementoConversao = GetTabelaElement(tabela_conversao, (int)bytes_lidos[read_position]);
-            string_route = TransformaCaminhoString(elementoConversao);
-            current_route_size = GetPercursoSize(elementoConversao);
-
-            for(i = 0; current_route_size; ++i, current_route_size--) {
-                bits_to_add[i] = string_route[i];
-            }
-            while(string_route[bits_to_add_position] != '\0') {
-                if(string_file_position == STRING_FILE_SIZE) {
-                    string_file_position = 0;
-                    PrintBinaryToCharacter(string_file, final_file);
-                }
-                string_file[string_file_position] = bits_to_add[bits_to_add_position];
-                bits_to_add_position++;
-                string_file_position++;
-            }
-            bits_to_add_position = 0;
-            if(string_file_position == STRING_FILE_SIZE) {
-                string_file_position = 0;
-                PrintBinaryToCharacter(string_file, final_file);
-            }
-            if(!total_frequency) {
-                if(string_file_position != 0) {
-                    string_file[string_file_position] = '\0';
-                    PrintBinaryToCharacter(string_file, final_file);
-                }
-            }
-            read_size--;
-            read_position++;
-        }
-        read_position = 0;
-    }
-}*/
-
     byte out ='\0';
     int i;
     unsigned char buffer[BUFFER_SIZE];
@@ -203,16 +158,13 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
         for (i = 0; i < tamBuffer; i++) {
             Percurso *path = GetTabelaElement(tabela_conversao, buffer[i]);
             Linha *iterador = GetPercursoFront(path);
-            while (iterador != NULL) {
-             //   printf("eSTOU NO BIT %d: %d\n", posicao_bit, (GetLinhaI(iterador) - '0'));
-                if (posicao_bit == -1) {
-              //      printf("Written");
+            while (iterador != NULL) {  // Itera a codificação do byte atual.
+                if (posicao_bit == -1) {   // Se já tiver preenchido bit full, escreva, resete a posicao dos bits.
                     fwrite(&out, 1, sizeof(unsigned char), final_file);
                     posicao_bit = 7;
                     out = '\0';
                 }
-               // printf("eSTOU NO BIT %d: %d\n", posicao_bit, (GetLinhaI(iterador) - '0'));
-                if ((GetLinhaI(iterador) - '0') == 1) {
+                if ((GetLinhaI(iterador) - '0') == 1) {  // Se pos_percurso atual == 1, sete o bit pra 1.
                     out = set_bit(out, posicao_bit);
                 }
                 posicao_bit--;
@@ -221,7 +173,7 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
         }
     }
         if (posicao_bit!=7)
-        {//printf("Written");
+        {
             fwrite(&out, 1, sizeof(unsigned char), final_file);
         }
     }
