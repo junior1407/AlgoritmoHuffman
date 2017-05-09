@@ -144,7 +144,7 @@ void AddCase4(Root * root, RedBlack * rb) {
     if (rb == rb->parent->right && rb->parent == GrandParent(rb)->left) { // ED
         RotateLeft(root, rb->parent);
         rb = rb->left;
-    } else if (rb == rb->parent->left && rb->parent == GrandParent(rb)->right) {
+    } else if (rb == rb->parent->left && rb->parent == GrandParent(rb)->right) { //DE
         RotateRight(root, rb->parent);
         rb = rb->right;
     }

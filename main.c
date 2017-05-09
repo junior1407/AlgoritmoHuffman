@@ -6,8 +6,7 @@
 #include "inc/binary.h"
 #define FRENTE 1
 #define TRAS 0
-#define BUFFER_SIZE 2
-#define STRING_FILE_SIZE 10000
+#define BUFFER_SIZE 1024
 
 typedef unsigned char byte;
 
@@ -134,18 +133,6 @@ void PrintHeader(long long int * frequencias, Huff * tree, Tabela * tabela_conve
         pos_bit--;
     }
     PrintPreOrder(GetHuffHead(tree), new_file);
-}
-
-int TotalFrequency(long long int * frequencias) {
-
-    int i;
-    int total_frenquency = 0;
-    for(i = 0; i < 256; ++i) {
-        if(frequencias[i] > 0) {
-            total_frenquency += frequencias[i];
-        }
-    }
-    return total_frenquency;
 }
 
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias) {
