@@ -76,6 +76,12 @@ unsigned char * TreeSizeBinary(Huff * tree) {
     return binary_tree_size;
 }
 
+unsigned char set_bit(unsigned char c, int i)
+{
+    unsigned char mask = 1 << i;
+    return mask | c;
+
+}
 void PrintBinaryToCharacter(unsigned char * string, FILE * new_file) {
 
     unsigned char * str_8bits = (unsigned char *)malloc(sizeof(unsigned char)*9);

@@ -14,7 +14,7 @@
  * Returns 0 if the bit 'i' isn't setted or returns a number different than 0, if 'i' is setted.
  */
 int is_bit_i_set(unsigned char c, int i);
-
+unsigned char set_bit(unsigned char c, int i);
 /*
  * It receives as parameter an int, 'integer', and an int, 'string_size', corresponding to the number of bits of the desired binary number;
  * Returns a string with the binary number of 'integer'.

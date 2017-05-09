@@ -6,7 +6,7 @@
 #include "inc/binary.h"
 #define FRENTE 1
 #define TRAS 0
-#define BUFFER_SIZE 500
+#define BUFFER_SIZE 2
 #define STRING_FILE_SIZE 10000
 
 typedef unsigned char byte;
@@ -137,7 +137,7 @@ int TotalFrequency(long long int * frequencias) {
 
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias) {
 
-
+/*
     int read_size;
 
 
@@ -157,11 +157,6 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
     int read_position = 0;
     byte bytes_lidos[BUFFER_SIZE];
     while((read_size = fread(&bytes_lidos, 1, BUFFER_SIZE, initial_file)) >= 1) {
-        // ABC
-        // A = 01
-        // B = 1
-        // C = 00
-
 
         while(read_size) {
             total_frequency--;
@@ -197,7 +192,42 @@ void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, 
         }
         read_position = 0;
     }
-}
+}*/
+
+    byte out ='\0';
+    int i;
+    unsigned char buffer[BUFFER_SIZE];
+    int tamBuffer;
+    int posicao_bit = 7;
+    while((tamBuffer = fread(buffer, 1, BUFFER_SIZE, initial_file)) >= 1) {
+        for (i = 0; i < tamBuffer; i++) {
+            Percurso *path = GetTabelaElement(tabela_conversao, buffer[i]);
+            Linha *iterador = GetPercursoFront(path);
+            while (iterador != NULL) {
+             //   printf("eSTOU NO BIT %d: %d\n", posicao_bit, (GetLinhaI(iterador) - '0'));
+                if (posicao_bit == -1) {
+              //      printf("Written");
+                    fwrite(&out, 1, sizeof(unsigned char), final_file);
+                    posicao_bit = 7;
+                    out = '\0';
+                }
+               // printf("eSTOU NO BIT %d: %d\n", posicao_bit, (GetLinhaI(iterador) - '0'));
+                if ((GetLinhaI(iterador) - '0') == 1) {
+                    out = set_bit(out, posicao_bit);
+                }
+                posicao_bit--;
+                iterador = GetLinhaNext(iterador);
+            }
+        }
+    }
+        if (posicao_bit!=7)
+        {//printf("Written");
+            fwrite(&out, 1, sizeof(unsigned char), final_file);
+        }
+    }
+
+
+
 
 void Compress(char * file_to_compress, char * file_created) {
 
