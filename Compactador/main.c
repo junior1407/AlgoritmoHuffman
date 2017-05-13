@@ -15,7 +15,6 @@ unsigned char * GetNBits(byte b,  int frente, int n);
 void GetFrequency(FILE * file, long long int * frequencias);
 unsigned char * ConcatString(unsigned char * str1, unsigned char * str2, int new_str_size);
 void PrintHeader(long long int * frequencias, Huff * tree, Tabela * tabela_conversao, FILE * new_file);
-int TotalFrequency(long long int * frequencias);
 void Convert(FILE * initial_file, FILE * final_file, Tabela * tabela_conversao, long long int * frequencias);
 void Compress(char * file_to_compress, char * file_created);
 void Decompress(char * file_to_decompress, char * decompressed_file);
@@ -64,7 +63,7 @@ byte * ReadFile(FILE * file, int numBytes) {
 
 unsigned char * GetNBits(byte b,  int frente, int n) {
 
-    unsigned char * array = (unsigned char *)malloc(sizeof(unsigned char)*(n+1));
+    unsigned char * array = (unsigned char *)malloc(sizeof(unsigned char)*(9));
     if(frente){
         b = b >> (8-n);
         b = b << (8-n);
@@ -194,6 +193,7 @@ void Decompress(char * file_to_decompress, char * decompressed_file) {
     int lixo = BinaryToInteger(bits_lixo);
     unsigned char * tamanho_1_tree = GetNBits(b[0],TRAS,5);
     unsigned char * tamanho_2_tree = GetNBits(b[1],FRENTE,8);
+    printf("%s-%s",tamanho_1_tree,tamanho_2_tree);
     unsigned char * tamanho_tree = ConcatString(tamanho_1_tree, tamanho_2_tree, 13);
     int sizeTree = BinaryToInteger(tamanho_tree);
     int i;
